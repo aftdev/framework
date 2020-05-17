@@ -1,0 +1,13 @@
+.idea
+.DS_Store
+composer.phar
+clover.xml
+coveralls-upload.json
+phpunit.xml
+.phpunit.result.cache
+vendor/
+.php_cs.cache
+coverage/
+config/*.develop
+coverage.x
+data

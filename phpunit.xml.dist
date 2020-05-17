@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true">
+    <testsuites>
+      <testsuite name="UnitTests">
+        <directory>packages/**/tests</directory>
+      </testsuite>
+      <testsuite name="Features">
+        <directory>tests/Feature</directory>
+      </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">packages/*/src</directory>
+        </whitelist>
+    </filter>
+    <php>
+      <env name="MEMCACHED_SERVER" value="memcached://memcached:11211" />
+      <env name="REDIS_SERVER" value="redis://redis:6379" />
+    </php>
+</phpunit>
