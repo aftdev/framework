@@ -1,6 +1,10 @@
 name: Main Workflow
 
-on: [push]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
 
 env:
   COVER_REPORT_PATH: ./coverage.xml
@@ -32,7 +36,7 @@ jobs:
           - 11211
     steps:
       - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@v1
+        uses: shivammathur/setup-php@v2
         with:
           php-version: 8.0
           extensions: mbstring, dom, fileinfo, mysql, redis, memcached
