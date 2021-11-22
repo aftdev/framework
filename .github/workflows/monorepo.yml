@@ -1,0 +1,66 @@
+name: 'Packages Split'
+
+on:
+  push:
+      branches:
+          - main
+      tags:
+          - '*'
+env:
+  GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+jobs:
+  packages_split:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # define package to repository map
+        package:
+          - local_path: cache
+            split_repository: cache
+          #- local_path: console
+          #  split_repository: console
+          #- local_path: db
+          #  split_repository: db
+          #- local_path: filesystem
+          #  split_repository: filesystem
+          #- local_path: log
+          #  split_repository: log-manager
+          #- local_path: messenger
+          #  split_repository: messenger
+          #- local_path: service-manager
+          #  split_repository: service-manager
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # no tag
+      - name: Run without tag
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        uses: "symplify/monorepo-split-github-action@2.1"
+        with:
+          # ↓ split "packages/[package]" directory
+          package_directory: 'packages/${{ matrix.package.local_path }}'
+
+          # ↓ into https://github.com/[organization]/[package] repository
+          repository_organization: '${{secrets.REPOSPLIT_ORGANIZATION}}'
+          repository_name: '${{ matrix.package.split_repository }}'
+
+          # ↓ the user signed under the split commit
+          user_name: GitHub Action
+          user_email: action@github.com
+
+      # with tag
+      - name: Run for tag
+        if: "startsWith(github.ref, 'refs/tags/')"
+        uses: "symplify/monorepo-split-github-action@2.1"
+        with:
+          tag: ${GITHUB_REF#refs/tags/}
+          # ↓ split "packages/easy-coding-standard" directory
+          package_directory: 'packages/${{ matrix.package.local_path }}'
+          # ↓ into https://github.com/symplify/easy-coding-standard repository
+          repository_organization: '${{secrets.REPOSPLIT_ORGANIZATION}}'
+          repository_name: '${{ matrix.package.split_repository }}'
+          # ↓ the user signed under the split commit
+          user_name: GitHub Action
+          user_email: action@github.com
