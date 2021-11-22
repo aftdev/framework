@@ -45,29 +45,17 @@ jobs:
       - name: Checkout files
         uses: actions/checkout@v2
 
+      - uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: "-q --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist"
+
       - name: Validate Composer
         run: composer validate
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Retrieve composer cache
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist
-
-      - name: Lint
+      - name: Lint PHP
         run: composer cs-check
 
-      - name: Execute tests (Unit and Feature tests) via PHPUnit on docker image
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
         env:
           DB_CONNECTION: test
           TEST_DB_PORT: ${{ job.services.mysql.ports['3306'] }}
