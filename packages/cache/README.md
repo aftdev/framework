@@ -43,8 +43,11 @@ You can easily use it in your classes.
 
 ```php
 <?php
+
+use Symfony\Contracts\Cache\CacheInterface;
+
 class X {
-    public function __construct(\Symfony\Contracts\Cache\CacheInterface $defaultCache) 
+    public function __construct(CacheInterface $defaultCache) 
 {
         $defaultCache->get('xxxx', function(ItemInterface $item) {
             $item->expiresAfter(3600);
