@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+namespace AftDev\Db;
+
+use AftDev\Db\Migration\PhinxApplication;
+
+// Composer autoloader.
+$possibleAutoloadPaths = [
+  // from vendor folder.
+  __DIR__ . '/../../../autoload.php',
+  // from monorepo package.
+  __DIR__ . '/../../../vendor/autoload.php',
+];
+
+$autoloaderPath = null;
+foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
+  if (file_exists($possibleAutoloadPath)) {
+    $autoloaderPath = realpath($possibleAutoloadPath);
+    require_once $possibleAutoloadPath;
+    break;
+  }
+}
+
+if (!$autoloaderPath) {
+  fwrite(STDERR, 'Cannot locate autoloader; please run "composer install"'.PHP_EOL);
+  exit(1);
+}
+
+$applicationRoot = dirname($autoloaderPath, 2);
+
+// Try to load the application service container.
+$containerPath = getenv('SERVICE_CONTAINER_PATH') ?: $applicationRoot.'/config/container.php';
+if (file_exists($containerPath)) {
+  $container = require $containerPath;
+  $application = $container->get(PhinxApplication::class);
+} else {
+  fwrite(STDERR, 'Could not locate the service container"'.PHP_EOL);
+  exit(1);
+}
+
+$application->run();

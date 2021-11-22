@@ -1,0 +1,51 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+namespace AftDev\Console;
+
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
+// Composer autoloader.
+$possibleAutoloadPaths = [
+  // from vendor folder.
+  __DIR__ . '/../../../autoload.php',
+  // from monorepo package.
+  __DIR__ . '/../../../vendor/autoload.php',
+];
+
+$autoloaderPath = null;
+foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
+  if (file_exists($possibleAutoloadPath)) {
+    $autoloaderPath = realpath($possibleAutoloadPath);
+    require_once $possibleAutoloadPath;
+    break;
+  }
+}
+
+if (!$autoloaderPath) {
+    fwrite(STDERR, 'Cannot locate autoloader; please run "composer install"'.PHP_EOL);
+    exit(1);
+}
+
+$applicationRoot = dirname($autoloaderPath, 2);
+
+$output = new ConsoleOutput();
+$input = new ArgvInput();
+
+$io = new SymfonyStyle($input, $output);
+
+// Try to load the application service container.
+$containerPath = getenv('SERVICE_CONTAINER_PATH') ?: $applicationRoot.'/config/container.php';
+if (file_exists($containerPath)) {
+    $container = require $containerPath;
+    $application = $container->get(Application::class);
+} else {
+    $application = new Application();
+    $io->warning('Using in Test mode - No commands were added.');
+}
+
+$application->run($input, $output);

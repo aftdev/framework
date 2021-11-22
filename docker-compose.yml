@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  # Php Image
+  php:
+    container_name: framework-php
+    build:
+      context: .
+      dockerfile: ./env/php/Dockerfile
+    stdin_open: true
+    tty: true
+    # Map local user to container user for file permissions.
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      PHP_VERSION: ${PHP_VERSION:-80}
+    volumes:
+      - './:/data'
+  # Mysql Database
+  mysql:
+    container_name: framework-mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '${LOCALDEV_MYSQL_PORT:-3306}:3306'
+  # AWS services
+  localstack:
+    container_name: framework-aws
+    image: localstack/localstack:latest
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+      - SERVICES=sqs,s3,dynamodb
+      - LOCALDEV_PREFIX=framework
+    ports:
+      - '${LOCALDEV_LOCALSTACK_PORT:-4566}:4566'
+    volumes:
+      - '${TMPDIR:-/tmp/localstack}:/tmp/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - './env/aws:/docker-entrypoint-initaws.d'
+  # Redis Database
+  redis:
+    image: redis
+    container_name: framework-redis
+    command: redis-server --requirepass redis
+    ports:
+      - '${LOCALDEV_REDIS_EXPOSED_PORT:-6379}:6379'
+  # Memcached
+  memcached:
+    image: memcached
+    container_name: framework-memcached
+    ports:
+      - '${LOCALDEV_MEMCACHED_EXPOSED_PORT:-11211}:11211'
+
+networks:
+  default:
+    name: aftdev-framework

@@ -1,0 +1,29 @@
+{
+    "name": "aftdev/db-eloquent",
+    "description": "Use Eloquent models in your non-laravel application.",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": "^8.0",
+        "aftdev/db-manager": "^1.1",
+        "illuminate/database": "^8.0",
+        "psr/http-server-middleware": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AftDev\\DbEloquent\\": "src/"
+        },
+        "classmap": [
+            "src/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AftDevTest\\DbEloquent\\": "tests/"
+        }
+    },
+    "extra": {
+        "laminas": {
+            "config-provider": "AftDev\\DbEloquent\\ConfigProvider"
+        }
+    }
+}

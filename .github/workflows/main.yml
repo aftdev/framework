@@ -1,0 +1,81 @@
+name: Main Workflow
+
+on: [push]
+
+env:
+  COVER_REPORT_PATH: ./coverage.xml
+  TEST_DB_HOSTNAME: 127.0.0.1
+  TEST_DB_NAME: test
+  TEST_DB_USERNAME: root
+  TEST_DB_PASSWORD: root
+jobs:
+  feature-tests:
+    name: Feature Tests
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        options: --name mysql --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        ports:
+          - 3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+      redis:
+        image: redis
+        options: "--name redis"
+        ports:
+          - 6379
+      memcached:
+        image: memcached
+        options: "--name memcached"
+        ports:
+          - 11211
+    steps:
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v1
+        with:
+          php-version: 8.0
+          extensions: mbstring, dom, fileinfo, mysql, redis, memcached
+          coverage: xdebug
+
+      - name: Checkout files
+        uses: actions/checkout@v2
+
+      - name: Validate Composer
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Retrieve composer cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist
+
+      - name: Lint
+        run: composer cs-check
+
+      - name: Execute tests (Unit and Feature tests) via PHPUnit on docker image
+        env:
+          DB_CONNECTION: test
+          TEST_DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          REDIS_SERVER: redis://localhost:${{ job.services.redis.ports['6379'] }}
+          MEMCACHED_SERVER: memcached://localhost:${{ job.services.memcached.ports['11211'] }}
+        run: |
+          mysql -h $TEST_DB_HOSTNAME -P $TEST_DB_PORT -u $TEST_DB_USERNAME -p$TEST_DB_PASSWORD -e "CREATE DATABASE $TEST_DB_NAME"
+          vendor/bin/phpunit --coverage-clover=$COVER_REPORT_PATH
+          mysql -h $TEST_DB_HOSTNAME -P $TEST_DB_PORT -u $TEST_DB_USERNAME -p$TEST_DB_PASSWORD -e "DROP DATABASE IF EXISTS $TEST_DB_NAME"
+
+      - name: Send coverage info to codecoverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ${{ env.COVER_REPORT_PATH }}

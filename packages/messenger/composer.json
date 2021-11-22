@@ -1,0 +1,41 @@
+{
+    "name": "aftdev/messenger",
+    "description": "Messenger Manager service based on symfony messenger",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": "^8.0",
+        "aftdev/console-manager": "^1.1",
+        "aftdev/service-manager": "^1.1",
+        "symfony/messenger": "^5.0",
+        "symfony/serializer": "^5.0",
+        "symfony/property-access": "^5.0",
+        "symfony/property-info": "^5.0"
+    },
+    "require-dev": {
+        "nesbot/carbon": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AftDev\\Messenger\\": "src/"
+        },
+        "classmap": [
+            "src/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AftDevTest\\Messenger\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --colors=always"
+    },
+    "extra": {
+        "laminas": {
+            "config-provider": "AftDev\\Messenger\\ConfigProvider"
+        }
+    },
+    "suggest": {
+        "symfony/redis-messenger": "To use Redis queues"
+    }
+}

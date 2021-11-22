@@ -1,0 +1,33 @@
+{
+    "name": "aftdev/console-manager",
+    "description": "Console Manager.",
+    "license": "BSD-3-Clause",
+    "keywords": ["symfony", "console"],
+    "bin": [
+        "bin/console"
+    ],
+    "require": {
+        "php": "^8.0",
+        "aftdev/service-manager": "^1.1",
+        "symfony/console": "^5.0",
+        "ocramius/package-versions": "^1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "AftDev\\Console\\": "src/"
+        },
+        "classmap": [
+            "src/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AftDevTest\\Console\\": "tests/"
+        }
+    },
+    "extra": {
+        "laminas": {
+            "config-provider": "AftDev\\Console\\ConfigProvider"
+        }
+    }
+}
