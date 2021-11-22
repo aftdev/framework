@@ -1,6 +1,6 @@
 {
     "name": "aftdev/cache-manager",
-    "description": "Cache Manager based on symfony cached.",
+    "description": "Cache Manager based on symfony cache",
     "license": "BSD-3-Clause",
     "keywords": ["symfony", "cache"],
     "require": {

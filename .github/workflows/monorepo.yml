@@ -17,7 +17,7 @@ jobs:
         # define package to repository map
         package:
           - local_path: cache
-            split_repository: cache
+            split_repository: cache-manager
           #- local_path: console
           #  split_repository: console
           #- local_path: db

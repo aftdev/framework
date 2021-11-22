@@ -4,6 +4,10 @@ Cache manager using symfony cache. https://symfony.com/doc/current/components/ca
 
 ## Usage
 
+```bash
+composer require aftdev/cache-manager
+```
+
 ```php
 <?php
 class X {
