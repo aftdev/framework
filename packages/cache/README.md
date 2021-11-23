@@ -48,7 +48,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class X {
     public function __construct(CacheInterface $defaultCache) 
-{
+    {
         $defaultCache->get('xxxx', function(ItemInterface $item) {
             $item->expiresAfter(3600);
             
