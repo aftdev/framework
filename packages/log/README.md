@@ -1,6 +1,6 @@
 # Log Manager.
 
-Log manager for monolog. https://github.com/Seldaek/monolog/
+Log manager for [monolog](https://github.com/Seldaek/monolog/)
 
 ## Usage
 

@@ -1,4 +1,4 @@
-# Laravel DbBuilder and Eloquent.
+# Laravel DbBuilder and Eloquent Models.
 
 Use Eloquent models without laravel !
 

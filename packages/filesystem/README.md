@@ -107,7 +107,7 @@ class X {
 
 ### Custom Adapters.
 
-The disk manager is a Zend Service Manager so you can add your own factories and aliases.
+The disk manager is a Lamninas Service Manager so you can add your own factories and aliases.
 Use the `disk_manager` config
 
 ```php

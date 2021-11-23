@@ -6,7 +6,7 @@ Provide a common repository of database connections that can be used by other pa
 
 ## Database Connections
 
-```
+```php
 return [
    'database' => [
        'connections' => [
@@ -34,7 +34,7 @@ return [
 
 Allow other packages to define phinx migrations scripts. 
 
-```
+```php
 <?php 
 return [
     'database' => [
@@ -54,6 +54,6 @@ See: http://docs.phinx.org/en/latest/index.html
 
 Instead of using the phinx bin use the database bin provided by this package.
 
-```
-$ vendor/bin/database
+```bash
+vendor/bin/database
 ```

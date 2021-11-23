@@ -13,7 +13,7 @@ You need to register your commands in the `console/commands` section of your con
 
 Optionally, you could define factories for each command in the `command_manager` section.
 
-```
+```php
 return [
     'console' => [
         'commands' => [

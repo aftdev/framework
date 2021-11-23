@@ -18,18 +18,20 @@ jobs:
         package:
           - local_path: cache
             split_repository: cache-manager
-          #- local_path: console
-          #  split_repository: console
-          #- local_path: db
-          #  split_repository: db
-          #- local_path: filesystem
-          #  split_repository: filesystem
-          #- local_path: log
-          #  split_repository: log-manager
-          #- local_path: messenger
-          #  split_repository: messenger
-          #- local_path: service-manager
-          #  split_repository: service-manager
+          - local_path: console
+            split_repository: console-manager
+          - local_path: db
+            split_repository: db-manager
+          - local_path: db-eloquent
+            split_repository: db-eloquent
+          - local_path: filesystem
+            split_repository: filesystem-manager
+          - local_path: log
+            split_repository: log-manager
+          - local_path: messenger
+            split_repository: messenger
+          - local_path: service-manager
+            split_repository: service-manager
 
     steps:
       - uses: actions/checkout@v2

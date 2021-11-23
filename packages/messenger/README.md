@@ -2,7 +2,7 @@
 
 Messaging system based on the [Symfony messenger](https://symfony.com/doc/current/components/messenger.html). 
 
-Allow your application to dispatch messages.
+Allows your application to dispatch messages to queues.
 
 ## Dispatching a message
 

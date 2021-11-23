@@ -1,4 +1,7 @@
-# AftZend Service Manager
+# Service Manager
+
+This package contains extra goodies built on top of the [laminas service
+manager](https://docs.laminas.dev/laminas-servicemanager/).
 
 ## Configurable Service Manager
 
@@ -46,9 +49,10 @@ $config = [
 ];
 ```
 
-## Resolver
+## Service Resolver
 
 Use the Resolver to automatically inject dependencies when calling function.
+This is based on the laravel container [functionality](https://laravel.com/docs/8.x/container#method-invocation-and-injection).
 
 ```php
 <?php

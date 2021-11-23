@@ -1,5 +1,5 @@
 {
-    "name": "aftdev/filesystem",
+    "name": "aftdev/filesystem-manager",
     "description": "Filesystem Manager based on flysystem",
     "license": "BSD-3-Clause",
     "keywords": ["flysystem"],
