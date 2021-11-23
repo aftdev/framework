@@ -39,7 +39,7 @@ class X {
 
 By default the `Symfony\Contracts\Cache\CacheInterface` and `Psr\Cache\CacheItemPoolInterface` (PSR-6) are linked to the default cache adapter from the configuration
 
-You can easily use it in your classes.
+You can easily use it in your classes like so.
 
 ```php
 <?php

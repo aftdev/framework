@@ -43,12 +43,12 @@ jobs:
           package_directory: 'packages/${{ matrix.package.local_path }}'
 
           # ↓ into https://github.com/[organization]/[package] repository
-          repository_organization: '${{secrets.REPOSPLIT_ORGANIZATION}}'
+          repository_organization: 'aftdev'
           repository_name: '${{ matrix.package.split_repository }}'
 
           # ↓ the user signed under the split commit
-          user_name: GitHub Action
-          user_email: action@github.com
+          user_name: Christophe Gaube
+          user_email: 1050197+cgaube@users.noreply.github.com
 
       # with tag
       - name: Run for tag
@@ -59,8 +59,8 @@ jobs:
           # ↓ split "packages/easy-coding-standard" directory
           package_directory: 'packages/${{ matrix.package.local_path }}'
           # ↓ into https://github.com/symplify/easy-coding-standard repository
-          repository_organization: '${{secrets.REPOSPLIT_ORGANIZATION}}'
+          repository_organization: 'aftdev'
           repository_name: '${{ matrix.package.split_repository }}'
           # ↓ the user signed under the split commit
-          user_name: GitHub Action
-          user_email: action@github.com
+          user_name: Christophe Gaube
+          user_email: 1050197+cgaube@users.noreply.github.com
