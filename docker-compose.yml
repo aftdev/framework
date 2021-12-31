@@ -22,6 +22,8 @@ services:
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_ROOT_PASSWORD: 'root'
+    volumes:
+      - "./env/mysql:/docker-entrypoint-initdb.d"
     ports:
       - '${LOCALDEV_MYSQL_PORT:-3306}:3306'
   # AWS services
