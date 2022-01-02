@@ -11,9 +11,5 @@
   },
   "scripts": {
     "prepare": "husky install"
-  },
-  "lint-staged": {
-    "*.php": "dev composer cs-fix -- --config .php-cs-fixer.dist.php",
-    "*.{md,json,yaml,yml}": "prettier --write"
   }
 }
