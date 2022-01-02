@@ -6,7 +6,7 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    # release workers - in order to execute
+    // release workers - in order to execute
     $services->set(ReleaseWorker\UpdateReplaceReleaseWorker::class);
     $services->set(ReleaseWorker\SetCurrentMutualDependenciesReleaseWorker::class);
     $services->set(ReleaseWorker\AddTagToChangelogReleaseWorker::class);

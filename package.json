@@ -1,0 +1,19 @@
+{
+  "name": "@aftdev/php-framework",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^16.0.1",
+    "@commitlint/config-conventional": "^16.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.2",
+    "prettier": "^2.5.1"
+  },
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.php": "dev composer cs-fix -- --config .php-cs-fixer.dist.php",
+    "*.{md,json,yaml,yml}": "prettier --write"
+  }
+}

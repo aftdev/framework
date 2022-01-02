@@ -19,19 +19,21 @@ jobs:
     services:
       mysql:
         image: mysql:5.7
-        options: --name mysql --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options:
+          --name mysql --health-cmd="mysqladmin ping" --health-interval=10s
+          --health-timeout=5s --health-retries=3
         ports:
           - 3306
         env:
           MYSQL_ROOT_PASSWORD: root
       redis:
         image: redis
-        options: "--name redis"
+        options: '--name redis'
         ports:
           - 6379
       memcached:
         image: memcached
-        options: "--name memcached"
+        options: '--name memcached'
         ports:
           - 11211
     steps:
@@ -45,9 +47,11 @@ jobs:
       - name: Checkout files
         uses: actions/checkout@v2
 
-      - uses: "ramsey/composer-install@v1"
+      - uses: 'ramsey/composer-install@v1'
         with:
-          composer-options: "-q --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist"
+          composer-options:
+            '-q --no-ansi --no-interaction --no-suggest --no-progress
+            --prefer-dist'
 
       - name: Validate Composer
         run: composer validate
@@ -59,8 +63,10 @@ jobs:
         env:
           DB_CONNECTION: test
           TEST_DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-          REDIS_SERVER: redis://localhost:${{ job.services.redis.ports['6379'] }}
-          MEMCACHED_SERVER: memcached://localhost:${{ job.services.memcached.ports['11211'] }}
+          REDIS_SERVER:
+            redis://localhost:${{ job.services.redis.ports['6379'] }}
+          MEMCACHED_SERVER:
+            memcached://localhost:${{ job.services.memcached.ports['11211'] }}
         run: |
           mysql -h $TEST_DB_HOSTNAME -P $TEST_DB_PORT -u $TEST_DB_USERNAME -p$TEST_DB_PASSWORD -e "CREATE DATABASE $TEST_DB_NAME"
           vendor/bin/phpunit --coverage-clover=$COVER_REPORT_PATH
