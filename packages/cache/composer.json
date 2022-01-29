@@ -1,29 +1,32 @@
 {
-    "name": "aftdev/cache-manager",
-    "description": "Cache Manager based on symfony cache",
-    "license": "BSD-3-Clause",
-    "keywords": ["symfony", "cache"],
-    "require": {
-        "php": "^8.0",
-        "aftdev/service-manager": "^1.1",
-        "symfony/cache": "^5.0"
+  "name": "aftdev/cache-manager",
+  "description": "Cache Manager based on symfony cache",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "symfony",
+    "cache"
+  ],
+  "require": {
+    "php": "^8.0",
+    "aftdev/service-manager": "^1.1",
+    "symfony/cache": "^5.0 || ^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "AftDev\\Cache\\": "src/"
     },
-    "autoload": {
-        "psr-4": {
-            "AftDev\\Cache\\": "src/"
-        },
-        "classmap": [
-            "src/"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "AftDevTest\\Cache\\": "tests/"
-        }
-    },
-    "extra": {
-        "laminas": {
-            "config-provider": "AftDev\\Cache\\ConfigProvider"
-        }
+    "classmap": [
+      "src/"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AftDevTest\\Cache\\": "tests/"
     }
+  },
+  "extra": {
+    "laminas": {
+      "config-provider": "AftDev\\Cache\\ConfigProvider"
+    }
+  }
 }

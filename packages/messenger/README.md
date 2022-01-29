@@ -1,6 +1,7 @@
 # Messenger
 
-Messaging system based on the [Symfony messenger](https://symfony.com/doc/current/components/messenger.html). 
+Messaging system based on the
+[Symfony messenger](https://symfony.com/doc/current/components/messenger.html).
 
 Allows your application to dispatch messages to queues.
 
@@ -16,10 +17,10 @@ use App\Message\YourMessage;
 
 class Test {
 
-	public function __construct(Messenger $messenger) { 
-	
+	public function __construct(Messenger $messenger) {
+
 		$message = new YourMessage();
-		
+
 		$messenger->dispatch($message);
 	}
 }
@@ -27,11 +28,13 @@ class Test {
 
 ## Handlers
 
-[Handlers](https://symfony.com/doc/current/components/messenger.html#handlers) are the services that handle the messages that were dispatched. 
+[Handlers](https://symfony.com/doc/current/components/messenger.html#handlers)
+are the services that handle the messages that were dispatched.
 
 ### Default handler
 
-By default, the default handler will try to use the `handle` function of the message class. 
+By default, the default handler will try to use the `handle` function of the
+message class.
 
 ```php
 <?php
@@ -43,10 +46,10 @@ return [
 ```
 
 ```php
-<?php 
+<?php
 namespace App\Message;
 
-class YourMessage 
+class YourMessage
 {
 	public function handle(DependencyA $a, OtherDependency $b)
 	{
@@ -55,27 +58,28 @@ class YourMessage
 }
 ```
 
-All dependencies of the handle function will be automatically injected for you from the container.
+All dependencies of the handle function will be automatically injected for you
+from the container.
 
-**Note**: If your message class does not have a `handle` function. Nothing will happen.
+**Note**: If your message class does not have a `handle` function. Nothing will
+happen.
 
 ### Custom Handlers
 
-If you prefer to create a custom handlers for your application messages you can do so by registering them in your application configuration.
+If you prefer to create a custom handlers for your application messages you can
+do so by registering them in your application configuration.
 
 e.g:
 
-> config/autoload/messenger.global.php
-
-```
+```php
 <?php
-
+// file: config/autoload/messenger.global.php
 return [
 	'messenger' => [
 		'handlers' => [
-			CustomMessage::class => CustomHandler::class,  <- Target a specific message type
+			CustomMessage::class => CustomHandler::class, // <- Target a specific message type
 			'*' => [
-				'CustomDefaultHandlerForAllMessagess::class,  <- Target all messages
+				'CustomDefaultHandlerForAllMessages::class', // <- Target all messages
 			]
 		],
 	],
@@ -84,11 +88,13 @@ return [
 
 ## Senders.
 
-Messages, instead of being handled directly, could be sent somewhere else like a queue.
+Messages, instead of being handled directly, could be sent somewhere else like a
+queue.
 
 ### Custom Senders
 
-To create custom senders for your application message you can add them by assigning a class name or interface to a Sender.
+To create custom senders for your application message you can add them by
+assigning a class name or interface to a Sender.
 
 ```php
 <?php
@@ -104,9 +110,11 @@ return [
 
 ### Queues
 
-Dispatching a message straightaway is not always useful. For that reason messages can easily be sent to a queue instead.
+Dispatching a message straightaway is not always useful. For that reason
+messages can easily be sent to a queue instead.
 
-In order for your message to be queued they need to implements the AftDev\Messenger\Message\QueueableInterface
+In order for your message to be queued they need to implements the
+AftDev\Messenger\Message\QueueableInterface
 
 ```php
 <?php
@@ -115,24 +123,24 @@ class Message implements \AftDev\Messenger\Message\QueueableInterface
 {
     use \AftDev\Messenger\Message\QueueableTrait;
 
-	protected $queue = 'redis';
+	  protected $queue = 'redis';
 }
 ```
 
 ```php
-<?php 
+<?php
 
 $message = new Message();
 $message->onQueue('other');
-	
+
 $messenger->dispatch($message);
 
 ```
 
 #### Queue transports available
 
-All symfony transports are available to use 
-Please see the list here https://symfony.com/doc/current/messenger.html#transport-configuration
+All symfony transports are available to use Please see the list here
+https://symfony.com/doc/current/messenger.html#transport-configuration
 
 By default the redis and memory transports are configured like so:
 
@@ -156,7 +164,8 @@ return [
 
 ##### Memory
 
-Used for testing. Will just add the message to a memory queue. You would need to consume them from the same php request.
+Used for testing. Will just add the message to a memory queue. You would need to
+consume them from the same php request.
 
 ##### Redis
 
@@ -177,10 +186,11 @@ return [
 ```
 
 ### Queue Message Serialization
+
 https://symfony.com/doc/current/messenger.html#serializing-messages
 
-Default serializer will properly serialize and deserialize your messages for you.
-Just type-hint your parameters properly.
+Default serializer will properly serialize and deserialize your messages for
+you. Just type-hint your parameters properly.
 
 ```php
 <?php
@@ -210,10 +220,12 @@ class ToSerialize {
 
 #### Serializing complex parameters
 
-Out of the box we support \DateTime and CarbonInterface objects.
-If you want to support more types you can easily add more normalizers/denormalizers to the configuration
+Out of the box we support \DateTime and CarbonInterface objects. If you want to
+support more types you can easily add more normalizers/denormalizers to the
+configuration
 
-They need to implement `\Symfony\Component\Serializer\Normalizer\DenormalizerInterface` and / or 
+They need to implement
+`\Symfony\Component\Serializer\Normalizer\DenormalizerInterface` and / or
 `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
 
 ```php
@@ -230,7 +242,9 @@ return [
 
 ### Consuming queues.
 
-We are using the [symfony message:consume command](https://symfony.com/doc/current/messenger.html#consuming-messages-running-the-worker) and the `AftDev\Console` package.
+We are using the
+[symfony message:consume command](https://symfony.com/doc/current/messenger.html#consuming-messages-running-the-worker)
+and the `AftDev\Console` package.
 
 ```bash
 vendor/bin/console message:consume queue --limit=X

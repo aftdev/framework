@@ -3,6 +3,11 @@
 namespace AftDev\Filesystem;
 
 use AftDev\Filesystem\Factory\DiskAbstractFactory;
+use League\Flysystem\Config;
+use League\Flysystem\MountManager;
+use League\Flysystem\Visibility;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
+use League\MimeTypeDetection\MimeTypeDetector;
 
 class ConfigProvider
 {
@@ -13,7 +18,6 @@ class ConfigProvider
         $config['dependencies'] = $this->getDependencyConfig();
         $config[self::CONFIG_KEY] = [
             'disks' => $this->getDiskManagerConfig(),
-            'plugin_manager' => $this->getPluginManagerConfig(),
         ];
 
         return $config;
@@ -27,11 +31,14 @@ class ConfigProvider
         return [
             'aliases' => [
                 'FileManager' => FileManager::class,
+                MountManager::class => FileManager::class,
+            ],
+            'invokables' => [
+                MimeTypeDetector::class => FinfoMimeTypeDetector::class,
             ],
             'factories' => [
                 FileManager::class => Factory\FileManagerFactory::class,
                 DiskManager::class => Factory\DiskManagerFactory::class,
-                PluginManager::class => Factory\PluginManagerFactory::class,
             ],
         ];
     }
@@ -45,18 +52,17 @@ class ConfigProvider
             'default' => 'local',
             'cloud' => 's3',
             'default_options' => [
-                'visibility' => 'public',
-                'case_sensitive' => true,
-                'disable_asserts' => false,
+                Config::OPTION_VISIBILITY => Visibility::PUBLIC,
+                Config::OPTION_DIRECTORY_VISIBILITY => Visibility::PUBLIC,
             ],
             'plugins' => [
+                'memory' => [],
                 'local' => [
-                    'root' => 'data/files',
+                    'location' => 'data/files',
                 ],
                 's3' => [
-                    'case_sensitive' => true,
-                    'disable_asserts' => true,
-                    'visibility' => 'private',
+                    'bucket' => 'default',
+                    'prefix' => '',
                     'credentials' => [
                         'key' => 'your-key',
                         'secret' => 'your-secret',
@@ -64,23 +70,10 @@ class ConfigProvider
                     'region' => 'your-region',
                     'version' => 'latest',
                 ],
-                'test' => [
-                    'adapter' => 'null',
-                    'options' => [],
-                ],
             ],
             'abstract_factories' => [
                 'default' => DiskAbstractFactory::class,
             ],
-        ];
-    }
-
-    /**
-     * Get configuration for the disk service manager.
-     */
-    public function getPluginManagerConfig(): array
-    {
-        return [
         ];
     }
 }
