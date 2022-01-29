@@ -5,7 +5,6 @@ namespace AftDevTest\Filesystem\Factory;
 use AftDev\Filesystem\DiskManager;
 use AftDev\Filesystem\Factory\FileManagerFactory;
 use AftDev\Filesystem\FileManager;
-use AftDev\Filesystem\PluginManager;
 use AftDev\Test\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -22,10 +21,9 @@ class FileManagerFactoryTest extends TestCase
     {
         $container = $this->prophesize(ContainerInterface::class);
         $diskManager = $this->prophesize(DiskManager::class);
-        $pluginManager = $this->prophesize(PluginManager::class);
 
+        $diskManager->getAllDisks()->willReturn([]);
         $container->get(DiskManager::class)->willReturn($diskManager->reveal());
-        $container->get(PluginManager::class)->willReturn($pluginManager->reveal());
 
         $factory = new FileManagerFactory();
         $filemanager = $factory($container->reveal(), FileManager::class);

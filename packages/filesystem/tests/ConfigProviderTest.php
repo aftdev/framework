@@ -24,6 +24,5 @@ class ConfigProviderTest extends TestCase
         $filesystemConfig = $config[ConfigProvider::CONFIG_KEY];
 
         $this->assertArrayHasKey('disks', $filesystemConfig);
-        $this->assertArrayHasKey('plugin_manager', $filesystemConfig);
     }
 }

@@ -1,41 +1,36 @@
 {
-    "name": "aftdev/filesystem-manager",
-    "description": "Filesystem Manager based on flysystem",
-    "license": "BSD-3-Clause",
-    "keywords": ["flysystem"],
-    "require": {
-        "php": "^8.0",
-        "league/flysystem": "^1.0",
-        "league/flysystem-cached-adapter": "^1.0",
-        "aftdev/service-manager": "^1.1"
+  "name": "aftdev/filesystem-manager",
+  "description": "Filesystem Manager based on flysystem (v2)",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "flysystem"
+  ],
+  "require": {
+    "php": "^8.0",
+    "league/flysystem": "^2.3.2",
+    "aftdev/service-manager": "^1.1",
+    "illuminate/support": "^8.0"
+  },
+  "require-dev": {
+    "league/flysystem-memory": "^2.0",
+    "league/flysystem-aws-s3-v3": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "AftDev\\Filesystem\\": "src/"
     },
-    "require-dev": {
-        "league/flysystem-webdav": "^1.0",
-        "spatie/flysystem-dropbox": "^1.0",
-        "league/flysystem-sftp": "^1.0",
-        "superbalist/flysystem-google-storage": "^1.0",
-        "league/flysystem-memory": "^1.0",
-        "aftdev/cache-manager": "^1.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "AftDev\\Filesystem\\": "src/"
-        },
-        "classmap": [
-            "src/"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "AftDevTest\\Filesystem\\": "tests/"
-        }
-    },
-    "extra": {
-        "laminas": {
-            "config-provider": "AftDev\\Filesystem\\ConfigProvider"
-        }
-    },
-    "suggest": {
-        "aftdev/cache-manager": "To use caching with the filesystem."
+    "classmap": [
+      "src/"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AftDevTest\\Filesystem\\": "tests/"
     }
+  },
+  "extra": {
+    "laminas": {
+      "config-provider": "AftDev\\Filesystem\\ConfigProvider"
+    }
+  }
 }

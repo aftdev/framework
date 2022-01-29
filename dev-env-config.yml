@@ -1,10 +1,15 @@
+name: Aft - Framework
 # Where to find the project custom commands.
 commands_dir: null
+package_managers:
+  node:
+    manager: yarn
+    priority: 0
+  composer:
+    priority: 200
 # How and where to run your project executables
 executables:
   docker-compose: docker compose
-  # use yarn instead of npm
-  npm: yarn
   composer:
     command: composer
     # Where should the command be executed?

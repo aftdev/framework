@@ -11,5 +11,5 @@ vendor/
 coverage/
 config/*.develop
 coverage.x
-data
+tests/data/log
 .env

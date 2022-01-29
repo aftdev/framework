@@ -33,6 +33,7 @@ class SymfonyTransportAbstractFactory implements AbstractFactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $dsn = $options['dsn'] ?? $requestedName.'://';
+        unset($options['dsn']);
         $factoryType = explode('://', $dsn)[0];
 
         $factoryName = self::FACTORY_MAPPING[$factoryType] ?? null;
