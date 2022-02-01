@@ -13,8 +13,8 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
- * @covers \AftDev\Filesystem\DiskAbstractFactory
  * @covers \AftDev\Filesystem\DiskManager
+ * @covers \AftDev\Filesystem\Factory\DiskAbstractFactory
  */
 class DiskManagerTest extends TestCase
 {

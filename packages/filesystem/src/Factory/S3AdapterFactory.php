@@ -29,7 +29,7 @@ class S3AdapterFactory extends ReflectionAbstractFactory
         [$filesystemConfig, $adapterConfig] = $this->getConfigFromOptions($options ?? []);
 
         // Assign default values if not set properly.
-        $adapterConfig['bucket-name'] ??= 'default';
+        $adapterConfig['bucket'] ??= 'default';
         $adapterConfig['prefix'] ??= '';
 
         $clientClass = $adapterConfig['client'] ?? null;

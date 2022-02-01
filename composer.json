@@ -86,11 +86,11 @@
     "test": "phpunit --colors=always",
     "unit": "phpunit --colors=always --testsuite UnitTests",
     "feature": "phpunit --colors=always --testsuite Features",
-    "coverage": "phpunit --colors=always --coverage-html=coverage",
-    "cs-check": "php-cs-fixer fix --dry-run -v --ansi",
-    "cs-fix": "php-cs-fixer fix -v --ansi",
+    "coverage": "@php -dpcov.enabled=1 -dpcov.directory=packages -dpcov.exclude='~vendor~' ./vendor/bin/phpunit --coverage-html=coverage",
+    "lint": "php-cs-fixer fix -v --ansi",
+    "lint:test": "@lint --dry-run",
     "check": [
-      "@cs-check",
+      "@lint:test",
       "@test"
     ]
   },

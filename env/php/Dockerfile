@@ -10,14 +10,14 @@ RUN yum-config-manager --enable remi-php${PHP_VERSION:-80}
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 RUN yum -y update \
-    # Other dependencies.
-    && yum install -y which man sudo tar wget hostname patch gzip zip unzip procps git --disableplugin=priorities \
-    # Install php modules.
-    && yum install -y \
-        php-{cli,opcache,mbstring,xml,dom,fileinfo,mysqlnd,redis,pecl-memcached} \
-        --disableplugin=priorities \
-    # Clean up
-    && yum clean all
+  # Other dependencies.
+  && yum install -y which man sudo tar wget hostname patch gzip zip unzip procps git --disableplugin=priorities \
+  # Install php modules.
+  && yum install -y \
+  php-{cli,opcache,mbstring,xml,dom,fileinfo,mysqlnd,redis,pecl-memcached,pecl-pcov} \
+  --disableplugin=priorities \
+  # Clean up
+  && yum clean all
 
 # Create User
 RUN useradd -ms /bin/bash php

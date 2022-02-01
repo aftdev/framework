@@ -9,7 +9,6 @@ on:
 env:
   COVER_REPORT_PATH: ./coverage.xml
   TEST_DB_HOSTNAME: 127.0.0.1
-  TEST_DB_NAME: test
   TEST_DB_USERNAME: root
   TEST_DB_PASSWORD: root
 jobs:
@@ -36,6 +35,11 @@ jobs:
         options: '--name memcached'
         ports:
           - 11211
+      localstack:
+        image: localstack/localstack:latest
+        options: '--name localstack'
+        ports:
+          - 4566
     steps:
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2
@@ -47,7 +51,10 @@ jobs:
       - name: Checkout files
         uses: actions/checkout@v2
 
-      - uses: 'ramsey/composer-install@v1'
+      - name: Check running containers
+        run: docker ps -a
+
+      - uses: 'ramsey/composer-install@v2'
         with:
           composer-options:
             '-q --no-ansi --no-interaction --no-suggest --no-progress
@@ -57,7 +64,16 @@ jobs:
         run: composer validate
 
       - name: Lint PHP
-        run: composer cs-check
+        run: composer lint:test
+
+      - name: Initialize test environment
+        run: |
+          docker cp ./env/mysql/init.sql mysql:/home/init.sql
+          docker exec mysql sh -c \
+            'mysql -u ${{ env.TEST_DB_USERNAME }} -p${{ env.TEST_DB_PASSWORD }} < ./home/init.sql'
+          docker cp ./env/aws/init.sh localstack:/home/init.sh
+          docker exec localstack sh -c \
+            'chmod +x /home/init.sh && /home/init.sh'
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         env:
@@ -67,10 +83,9 @@ jobs:
             redis://localhost:${{ job.services.redis.ports['6379'] }}
           MEMCACHED_SERVER:
             memcached://localhost:${{ job.services.memcached.ports['11211'] }}
-        run: |
-          mysql -h $TEST_DB_HOSTNAME -P $TEST_DB_PORT -u $TEST_DB_USERNAME -p$TEST_DB_PASSWORD -e "CREATE DATABASE $TEST_DB_NAME"
-          vendor/bin/phpunit --coverage-clover=$COVER_REPORT_PATH
-          mysql -h $TEST_DB_HOSTNAME -P $TEST_DB_PORT -u $TEST_DB_USERNAME -p$TEST_DB_PASSWORD -e "DROP DATABASE IF EXISTS $TEST_DB_NAME"
+          S3_ENDPOINT:
+            http://localhost:${{ job.services.localstack.ports['4566'] }}
+        run: composer coverage
 
       - name: Send coverage info to codecoverage
         uses: codecov/codecov-action@v2
