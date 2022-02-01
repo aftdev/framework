@@ -5,6 +5,6 @@
  */
 
 export default {
-  '*.php': 'dev composer cs-fix -- --config .php-cs-fixer.dist.php',
+  '*.php': 'dev composer lint -- --config .php-cs-fixer.dist.php',
   '*.{md,json,yaml,yml}': 'prettier --write'
 }

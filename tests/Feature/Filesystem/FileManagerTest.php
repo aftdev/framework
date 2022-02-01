@@ -8,6 +8,7 @@ use AftDev\Test\FeatureTestCase;
 /**
  * @internal
  *
+ * @covers \AftDev\Filesystem\DiskManager::getAllDisks()
  * @covers \AftDev\Filesystem\Factory\FileManagerFactory
  * @covers \AftDev\Filesystem\FileManager
  */
