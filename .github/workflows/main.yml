@@ -46,13 +46,10 @@ jobs:
         with:
           php-version: 8.0
           extensions: mbstring, dom, fileinfo, mysql, redis, memcached
-          coverage: xdebug
+          coverage: pcov
 
       - name: Checkout files
         uses: actions/checkout@v2
-
-      - name: Check running containers
-        run: docker ps -a
 
       - uses: 'ramsey/composer-install@v2'
         with:
@@ -61,7 +58,9 @@ jobs:
             --prefer-dist'
 
       - name: Validate Composer
-        run: composer validate
+        run: |
+          composer validate
+          composer monorepo validate
 
       - name: Lint PHP
         run: composer lint:test
@@ -85,7 +84,7 @@ jobs:
             memcached://localhost:${{ job.services.memcached.ports['11211'] }}
           S3_ENDPOINT:
             http://localhost:${{ job.services.localstack.ports['4566'] }}
-        run: composer coverage
+        run: composer coverage -- --coverage-clover=${{ env.COVER_REPORT_PATH }}
 
       - name: Send coverage info to codecoverage
         uses: codecov/codecov-action@v2

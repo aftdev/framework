@@ -3,13 +3,11 @@
 node_modules
 composer.phar
 clover.xml
-coveralls-upload.json
 phpunit.xml
 .phpunit.result.cache
 vendor/
 .php-cs-fixer.cache
 coverage/
 config/*.develop
-coverage.x
 tests/data/log
 .env
