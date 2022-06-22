@@ -1,18 +1,16 @@
 name: Aft - Framework
-# Where to find the project custom commands.
-commands_dir: null
 package_managers:
   node:
     manager: yarn
     priority: 0
   composer:
     priority: 200
-# How and where to run your project executables
-executables:
-  docker-compose: docker compose
-  composer:
-    command: composer
-    # Where should the command be executed?
-    use:
-      target: docker-compose
-      with: ['exec', 'php']
+environments:
+  local:
+    commands:
+      yarn: {}
+  docker-compose:
+    commands:
+      php: { 'container': 'php' }
+      composer: { 'container': 'php' }
+      mysql: { 'container': 'mysql' }
