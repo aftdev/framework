@@ -3,13 +3,13 @@
   "description": "Messenger Manager service based on symfony messenger",
   "license": "BSD-3-Clause",
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "aftdev/console-manager": "^1.1",
     "aftdev/service-manager": "^1.1",
-    "symfony/messenger": "^5.0 || ^6.0",
-    "symfony/serializer": "^5.0 || ^6.0",
-    "symfony/property-access": "^5.0 || ^6.0",
-    "symfony/property-info": "^5.0 || ^6.0"
+    "symfony/messenger": "^6.0",
+    "symfony/serializer": "^6.0",
+    "symfony/property-access": "^6.0",
+    "symfony/property-info": "^6.0"
   },
   "require-dev": {
     "nesbot/carbon": "^2.9.1"
