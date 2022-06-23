@@ -2,7 +2,6 @@
 
 namespace AftDev\Messenger\Queue\Factory;
 
-//use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Psr\Container\ContainerInterface;

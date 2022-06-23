@@ -1,33 +1,35 @@
 {
-    "name": "aftdev/db-manager",
-    "description": "Database Manager",
-    "license": "BSD-3-Clause",
-    "keywords": ["zf3"],
-    "bin": [
-        "bin/database"
-    ],
-    "require": {
-        "php": "^8.0",
-        "laminas/laminas-stdlib": "^3.1",
-        "robmorgan/phinx": "^0.12.9",
-        "aftdev/console-manager": "^1.1"
+  "name": "aftdev/db-manager",
+  "description": "Database Manager",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "zf3"
+  ],
+  "bin": [
+    "bin/database"
+  ],
+  "require": {
+    "php": "^8.1",
+    "laminas/laminas-stdlib": "^3.1",
+    "robmorgan/phinx": "^0.12.9",
+    "aftdev/console-manager": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "AftDev\\Db\\": "src/"
     },
-    "autoload": {
-        "psr-4": {
-            "AftDev\\Db\\": "src/"
-        },
-        "classmap": [
-            "src/"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "AftDevTest\\Db\\": "tests/"
-        }
-    },
-    "extra": {
-        "laminas": {
-            "config-provider": "AftDev\\Db\\ConfigProvider"
-        }
+    "classmap": [
+      "src/"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AftDevTest\\Db\\": "tests/"
     }
+  },
+  "extra": {
+    "laminas": {
+      "config-provider": "AftDev\\Db\\ConfigProvider"
+    }
+  }
 }

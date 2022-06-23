@@ -144,7 +144,7 @@ https://symfony.com/doc/current/messenger.html#transport-configuration
 
 By default the redis and memory transports are configured like so:
 
-```
+```php
 return [
 	'messenger' => [
 		'transports' => [
@@ -171,7 +171,7 @@ consume them from the same php request.
 
 [Symfony Docs for options and requirements](https://symfony.com/doc/current/messenger.html#redis-transport)
 
-```
+```php
 return [
 	'messenger' => [
 		'transports' => [

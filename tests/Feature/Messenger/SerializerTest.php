@@ -64,7 +64,7 @@ class SerializerTest extends FeatureTestCase
         $serialized = $serializer->encode($envelope);
         $unserialized = $serializer->decode($serialized);
 
-        $this->assertEquals($envelope, $unserialized);
+        $this->assertEquals($envelope->getMessage(), $unserialized->getMessage());
     }
 }
 
