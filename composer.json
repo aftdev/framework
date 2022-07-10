@@ -4,12 +4,16 @@
   "license": "BSD-3-Clause",
   "require": {
     "php": "^8.1",
+    "cebe/php-openapi": "^1.7.0",
     "illuminate/database": "^9.0",
     "illuminate/support": "^9.0",
+    "laminas/laminas-config": "^3.7.0",
+    "laminas/laminas-config-aggregator": "^1.7.0",
     "laminas/laminas-servicemanager": "^3.12.0",
     "laminas/laminas-stdlib": "^3.1",
     "league/flysystem": "^3.0.0",
     "monolog/monolog": "^3.1.0",
+    "ocramius/package-versions": "^2.5.1",
     "psr/container": "^1.1 || ^2.0",
     "psr/http-server-middleware": "^1.0",
     "robmorgan/phinx": "^0.12.9",
@@ -18,11 +22,11 @@
     "symfony/messenger": "^6.0",
     "symfony/property-access": "^6.0",
     "symfony/property-info": "^6.0",
-    "symfony/serializer": "^6.0"
+    "symfony/serializer": "^6.0",
+    "symfony/yaml": "^6.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.3.2",
-    "laminas/laminas-config-aggregator": "^1.1",
     "league/flysystem-aws-s3-v3": "^3.0",
     "league/flysystem-ftp": "^3.0",
     "league/flysystem-memory": "^3.0",
@@ -35,6 +39,7 @@
   },
   "autoload": {
     "classmap": [
+      "packages/api/src/",
       "packages/cache/src/",
       "packages/console/src/",
       "packages/db-eloquent/src/",
@@ -45,6 +50,7 @@
       "packages/service-manager/src/"
     ],
     "psr-4": {
+      "AftDev\\Api\\": "packages/api/src/",
       "AftDev\\Cache\\": "packages/cache/src/",
       "AftDev\\Console\\": "packages/console/src/",
       "AftDev\\DbEloquent\\": "packages/db-eloquent/src/",
@@ -57,6 +63,7 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "AftDevTest\\Api\\": "packages/api/tests/",
       "AftDevTest\\Cache\\": "packages/cache/tests/",
       "AftDevTest\\Console\\": "packages/console/tests/",
       "AftDevTest\\DbEloquent\\": "packages/db-eloquent/tests/",
@@ -69,6 +76,7 @@
     }
   },
   "replace": {
+    "aftdev/api": "self.version",
     "aftdev/cache-manager": "1.0.0",
     "aftdev/console-manager": "1.0.0",
     "aftdev/db-eloquent": "1.0.0",
@@ -105,6 +113,7 @@
         "AftDev\\Cache\\ConfigProvider",
         "AftDev\\Console\\ConfigProvider",
         "AftDev\\Messenger\\ConfigProvider",
+        "AftDev\\Api\\ConfigProvider",
         "AftDev\\Log\\ConfigProvider"
       ]
     }

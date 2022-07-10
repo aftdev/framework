@@ -4,15 +4,17 @@ namespace AftDev\ServiceManager\Factory;
 
 use AftDev\ServiceManager\Resolver;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionException;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
-class ReflectionAbstractFactory implements AbstractFactoryInterface
+class ResolverAbstractFactory implements AbstractFactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        $options ??= [];
+
         /** @var Resolver $resolver */
         $resolver = $container->has(Resolver::class) ? $container->get(Resolver::class) : new Resolver($container);
 
@@ -32,6 +34,8 @@ class ReflectionAbstractFactory implements AbstractFactoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     public function canCreate(ContainerInterface $container, $requestedName)
     {

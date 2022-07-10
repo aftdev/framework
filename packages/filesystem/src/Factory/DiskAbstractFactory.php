@@ -2,11 +2,11 @@
 
 namespace AftDev\Filesystem\Factory;
 
-use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 use League\Flysystem\Filesystem;
 use Psr\Container\ContainerInterface;
 
-class DiskAbstractFactory extends ReflectionAbstractFactory
+class DiskAbstractFactory extends ResolverAbstractFactory
 {
     use GetConfigTrait;
 

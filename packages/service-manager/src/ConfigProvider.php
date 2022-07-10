@@ -2,6 +2,8 @@
 
 namespace AftDev\ServiceManager;
 
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
+
 class ConfigProvider
 {
     public function __invoke()
@@ -16,6 +18,9 @@ class ConfigProvider
         return [
             'factories' => [
                 Resolver::class => Resolver\ResolverFactory::class,
+            ],
+            'abstract_factories' => [
+                'default' => ResolverAbstractFactory::class,
             ],
         ];
     }

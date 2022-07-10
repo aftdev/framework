@@ -3,12 +3,12 @@
 namespace AftDev\Cache\Factory;
 
 use AftDev\Cache\CacheManager;
-use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Cache\Adapter\ChainAdapter;
 
-class ChainAdapterFactory extends ReflectionAbstractFactory
+class ChainAdapterFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {

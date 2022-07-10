@@ -3,12 +3,12 @@
 namespace AftDev\Cache\Factory;
 
 use AftDev\Cache\CacheManager;
-use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 
-class TagAwareAdapterFactory extends ReflectionAbstractFactory
+class TagAwareAdapterFactory extends ResolverAbstractFactory
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
