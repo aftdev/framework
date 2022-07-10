@@ -27,9 +27,12 @@
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.3.2",
+    "laminas/laminas-diactoros": "^2.7",
     "league/flysystem-aws-s3-v3": "^3.0",
     "league/flysystem-ftp": "^3.0",
     "league/flysystem-memory": "^3.0",
+    "league/openapi-psr7-validator": "^0.18",
+    "mezzio/mezzio-router": "^3.8",
     "nesbot/carbon": "^2.9.1",
     "phpspec/prophecy-phpunit": "^2.0",
     "phpunit/phpunit": "^9.0",

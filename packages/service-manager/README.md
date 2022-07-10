@@ -1,13 +1,12 @@
 # Service Manager
 
-This package contains extra goodies built on top of the [laminas service
-manager](https://docs.laminas.dev/laminas-servicemanager/).
+This package contains extra goodies built on top of the
+[laminas service manager](https://docs.laminas.dev/laminas-servicemanager/).
 
 ## Configurable Service Manager
 
-Extends the Laminas Plugin Manager.
-Allows definition of plugin configuration/settings.
-To easily create configurable services/plugins.
+Extends the Laminas Plugin Manager. Allows definition of plugin
+configuration/settings. To easily create configurable services/plugins.
 
 ```php
 <?php
@@ -95,11 +94,11 @@ $serviceA = $resolver->resolveClass(ServiceA::class);
 
 ### Resolver Abstract Factory
 
-A Laminas abstract factory that will auto inject dependencies of your services by 
-using the resolver.
+A Laminas abstract factory that will auto inject dependencies of your services
+by using the resolver.
 
 Add it to your laminas service manager configuration in the 'abstract_factories'
-section. That way any unregistered services will be automatically created with 
+section. That way any unregistered services will be automatically created with
 all of their dependencies injected.
 
 ```php
@@ -116,17 +115,17 @@ $service_manager_config = [
 ];
 ```
 
-Note: This factory is automatically added if you are using this package
-service ConfigProvider.
+Note: This factory is automatically added if you are using this package service
+ConfigProvider.
 
 ### Contextual Binding / Binding Primitives
 
-Primitives variables cannot be auto-discovered by the service manager and thus would 
-require context binding.
+Primitives variables cannot be auto-discovered by the service manager and thus
+would require context binding.
 
 ```php
 
-class ServiceA 
+class ServiceA
 {
   public function __construct(
     private DependencyClass $dependency,
@@ -150,19 +149,69 @@ $serviceA->primitiveInt; // 1
 ### Method Invocation & Injection
 
 Use the Resolver to automatically inject dependencies when calling functions.
-This is based on the laravel container [functionality](https://laravel.com/docs/9.x/container#method-invocation-and-injection).
-
+This is based on the laravel container
+[functionality](https://laravel.com/docs/9.x/container#method-invocation-and-injection).
 
 ```php
 $resolver->call(function(Dependency $dependency) {
   return $dependency->doSomething();
 });
 ```
+
 Automatically fetch a service from the container and invoke its function
-(default is __invoke) but you can customize the function to use:
+(default is \_\_invoke) but you can customize the function to use:
 
 ```php
 $resolver->call(ServiceA::class);
 $resolver->call([ServiceA::class, 'handle']);
 $resolver->call(ServiceA::class.'@handle');
+```
+
+### PSR-15 Resolve Middleware
+
+If your application uses PSR-15 Middleware - like
+[Mezzio](https://docs.mezzio.dev/mezzio/) you could potentially use the provided
+Resolve Middleware to automatically inject dependencies in your handlers
+constructor but also handler actions.
+
+Example when using the Mezzio router.
+
+```php
+// config/routes.php
+
+return static function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
+
+  // By Manually creating the middleware
+  $resolver = $container->get(Resolver::class);
+  $pingMiddleware = new ResolveMiddleware($container, App\Handler\PingHandler::class.'@myCustomAction');
+
+  $app->get('/api/ping', $pingMiddleware, 'api.ping');
+
+  // Or by using the factory
+
+  $resolveMiddlewareFactory = $container->get(ResolveMiddlewareFactory::class);
+
+  $app->get('/api/ping', $resolveMiddlewareFactory->prepare(App\Handler\PingHandler::class.'@otherAction'), 'api.ping.factory');
+}
+```
+
+Note: By using this middleware, your handlers will not be able to implements the
+`Psr\Http\Server\RequestHandlerInterface` anymore. They should nonetheless
+return a `Psr\Http\Message\ResponseInterface`
+
+```php
+use Psr\Http\Message\ResponseInterface;
+
+class PingHandler
+{
+  public function myCustomAction(DependencyOne $dep1, DependencyTwo $dep2): ResponseInterface
+  {
+
+  }
+
+  public function myCustomAction(DependencyOne $dep1, DependencyTwo $dep2): ResponseInterface
+  {
+
+  }
+}
 ```

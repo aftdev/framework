@@ -17,6 +17,7 @@ $aggregator = new ConfigAggregator(
         \AftDev\Db\ConfigProvider::class,
         \AftDev\DbEloquent\ConfigProvider::class,
         \AftDev\Messenger\ConfigProvider::class,
+        \AftDev\Api\ConfigProvider::class,
 
         new PhpFileProvider(realpath(__DIR__).'/autoload/{{,*.}global,{,*.}local}.php'),
     ],

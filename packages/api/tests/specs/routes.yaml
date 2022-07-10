@@ -1,0 +1,125 @@
+openapi: '3.0.1'
+info:
+  version: 1.0.0
+  title: Route Tests
+  license:
+    name: MIT
+paths:
+  /companies:
+    get:
+      summary: List all companies
+      operationId: listCompanies
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+    post:
+      summary: Create a company
+      operationId: createCompany
+    options:
+      summary: >
+        Browsers send an HTTP OPTIONS request to find out the supported HTTP
+        methods and other options supported for the target resource before
+        sending the actual request.
+    head:
+      summary: >
+        HEAD method requests HTTP headers from the server as if the document was
+        requested using the HTTP GET method. The only difference between HTTP
+        HEAD and GET requests is that for HTTP HEAD, the server only returns
+        headers without body.
+      operationId: deleteCompany
+    trace:
+      operationId: traceCompany
+  /companies/{companyId}:
+    parameters:
+      - $ref: '#/components/parameters/company'
+    get:
+      summary: Info for a specific company
+      operationId: showCompanyById
+    delete:
+      summary: Delete a company
+      operationId: deleteCompany
+    put:
+      summary: Update company
+      operationId: updateCompanyById
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          description: The id of the company to retrieve
+          schema:
+            type: string
+  /companies/{companyId}/employees:
+    parameters:
+      - $ref: '#/components/parameters/company'
+    get:
+      summary: List all company employees
+      operationId: listEmployeesByCompany
+  /companies/{companyId}/employees/{employeeId}:
+    parameters:
+      - $ref: '#/components/parameters/company'
+    get:
+      summary: Get one company employee by id
+      description: should rarely exist
+      operationId: getEmployeeByCompany
+  /companies/{companyId}/employees/{employeeId}/salary:
+    parameters:
+      - $ref: '#/components/parameters/company'
+    get:
+      summary: Get salary of a company employee
+      description: This is getting ridiculous
+      operationId: getSalaryByCompanyEmployee
+  /companies/{companyId}/employees/{employeeId}/salary/{category}:
+    parameters:
+      - $ref: '#/components/parameters/company'
+    get:
+      summary: Get salary of a company employee by category
+      description: This is just silly now
+      operationId: getSalaryByCompanyEmployeeAndCategory
+  /test/param/{intParam}/{stringParam}/{optionalParam}:
+    parameters:
+      - $ref: '#/components/parameters/intParam'
+      - $ref: '#/components/parameters/numberParam'
+      - $ref: '#/components/parameters/dateParam'
+      - $ref: '#/components/parameters/optionalParam'
+    get:
+      operationId: sdfsdf
+components:
+  parameters:
+    company:
+      name: companyId
+      in: path
+      required: true
+      schema:
+        type: string
+    intParam:
+      name: intParam
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int32
+    numberParam:
+      name: numberParam
+      in: path
+      required: true
+      schema:
+        type: number
+        format: double
+    dateParam:
+      name: dateParam
+      in: path
+      required: true
+      schema:
+        type: string
+        format: date
+    optionalParam:
+      name: optionalParam
+      in: path
+      required: false
+      schema:
+        type: string
