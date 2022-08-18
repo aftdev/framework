@@ -77,18 +77,14 @@ $resolver->call(function (Dependency $dependency) {
 class ServiceA
 {
     protected $dependencyA;
-    function __construct(DependencyA $dependencyA)
+
+    public function __construct(DependencyA $dependencyA)
     {
         $this->dependencyA = $dependencyA;
     }
-
-    function handle(DependencyB $dependencyB)
-    {
-        $this->dependencyA->doSomething();
-        $dependencyB->doSomething();
-    }
 }
 
+// Instantiate class only
 $serviceA = $resolver->resolveClass(ServiceA::class);
 ```
 
@@ -162,9 +158,31 @@ Automatically fetch a service from the container and invoke its function
 (default is \_\_invoke) but you can customize the function to use:
 
 ```php
-$resolver->call(ServiceA::class);
-$resolver->call([ServiceA::class, 'handle']);
-$resolver->call(ServiceA::class.'@handle');
+class ServiceA
+{
+    protected $dependencyA;
+
+    public function __construct(DependencyA $dependencyA)
+    {
+        $this->dependencyA = $dependencyA;
+    }
+
+    public function __invoke(DependencyB $dependencyB)
+    {
+        $this->dependencyA->doSomething();
+        $dependencyB->doSomething();
+    }
+
+    public function handle(DependencyC $dependencyC)
+    {
+        // ...
+    }
+}
+
+
+$resolver->call(ServiceA::class); // uses __invoke
+$resolver->call([ServiceA::class, 'handle']); // uses handle
+$resolver->call(ServiceA::class.'@handle'); // uses handle
 ```
 
 ### PSR-15 Resolve Middleware
@@ -206,12 +224,10 @@ class PingHandler
 {
   public function myCustomAction(DependencyOne $dep1, DependencyTwo $dep2): ResponseInterface
   {
-
   }
 
-  public function myCustomAction(DependencyOne $dep1, DependencyTwo $dep2): ResponseInterface
+  public function otherAction(DependencyOne $dep1, DependencyTwo $dep2): ResponseInterface
   {
-
   }
 }
 ```
