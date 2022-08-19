@@ -22,7 +22,7 @@ class ConfigProvider
                 ResolveMiddlewareFactory::class => Middleware\ResolveMiddlewareFactoryFactory::class,
             ],
             'abstract_factories' => [
-                'default' => ResolverAbstractFactory::class,
+                'resolver' => ResolverAbstractFactory::class,
             ],
         ];
     }

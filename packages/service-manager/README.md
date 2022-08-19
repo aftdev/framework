@@ -226,7 +226,7 @@ class PingHandler
   {
   }
 
-  public function otherAction(DependencyOne $dep1, DependencyTwo $dep2): ResponseInterface
+  public function otherAction(DependencyThree $dep3): ResponseInterface
   {
   }
 }
