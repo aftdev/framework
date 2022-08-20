@@ -14,3 +14,5 @@ environments:
       php: { 'container': 'php' }
       composer: { 'container': 'php' }
       mysql: { 'container': 'mysql' }
+      console:
+        { 'container': 'php', 'command': './packages/console/bin/console' }

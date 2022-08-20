@@ -2,7 +2,7 @@
 
 namespace AftDev\Console;
 
-use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
 
 class ConfigProvider
 {
@@ -52,7 +52,7 @@ class ConfigProvider
     {
         return [
             'abstract_factories' => [
-                'default' => ReflectionBasedAbstractFactory::class,
+                'default' => ReflectionAbstractFactory::class,
             ],
         ];
     }

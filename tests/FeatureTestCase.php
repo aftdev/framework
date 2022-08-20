@@ -37,7 +37,7 @@ class FeatureTestCase extends TestCase
      */
     protected $useDb = false;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->getFreshContainer();
 
@@ -49,7 +49,7 @@ class FeatureTestCase extends TestCase
         parent::setUp();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         // rollback transaction.
         if ($this->useDb) {
