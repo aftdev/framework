@@ -6,7 +6,9 @@ use AftDev\Cache\CacheManager;
 use AftDev\Test\FeatureTestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Contracts\Cache\CacheInterface;
 
@@ -87,6 +89,14 @@ class CacheAdapterTest extends FeatureTestCase
             'redis' => [
                 'store' => 'redis',
                 'expected' => RedisAdapter::class,
+            ],
+            'php' => [
+                'store' => 'php',
+                'expected' => PhpFilesAdapter::class,
+            ],
+            'filesystem' => [
+                'store' => 'filesystem',
+                'expected' => FilesystemAdapter::class,
             ],
         ];
     }

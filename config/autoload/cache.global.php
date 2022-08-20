@@ -12,6 +12,14 @@ return [
             'redis' => [
                 'servers' => getenv('REDIS_SERVER') ?: 'redis://localhost:6379',
             ],
+            'php' => [
+                'directory' => realpath(__DIR__.'/../../tests/data/cache'),
+            ],
+            'filesystem' => [
+                'options' => [
+                    'directory' => realpath(__DIR__.'/../../tests/data/cache'),
+                ],
+            ],
         ],
     ],
 ];

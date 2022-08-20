@@ -33,7 +33,7 @@ class ConfigProvider
             'default' => 'filesystem',
             'default_options' => [
                 'namespace' => 'application',
-                'defaultLifetime' => 3600,
+                'defaultLifetime' => 2 * 60 * 60, // 2 Hours
             ],
             'plugins' => [
                 'filesystem' => [
@@ -44,6 +44,9 @@ class ConfigProvider
                 ],
                 'php' => [
                     'directory' => 'data/cache',
+                    'namespace' => 'php',
+                    'defaultLifetime' => 0,
+                    'appendOnly' => true,
                 ],
             ],
             'abstract_factories' => [
