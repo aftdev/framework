@@ -82,7 +82,7 @@
     "monorepo": "monorepo-builder",
     "repo-merge": "monorepo-builder merge --ansi",
     "repo-validate": "monorepo-builder validate --ansi",
-    "test": "phpunit --no-coverage",
+    "test": "phpunit --no-coverage --order-by=random",
     "test:unit": "@test --testsuite UnitTests",
     "test:feature": "@test --testsuite Features",
     "coverage": "@php -dpcov.enabled=1 ./vendor/bin/phpunit",

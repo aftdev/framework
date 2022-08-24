@@ -5,6 +5,7 @@ namespace AftDev\Test\Feature\Cache;
 use AftDev\Cache\CacheManager;
 use AftDev\Test\FeatureTestCase;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\SimpleCache\CacheInterface as SimpleCacheCacheInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
@@ -34,6 +35,7 @@ class CacheAdapterTest extends FeatureTestCase
      * Test Default cache.
      *
      * @covers \AftDev\Cache\Factory\DefaultCacheFactory
+     * @covers \AftDev\Cache\Factory\DefaultPsr16CacheFactory
      */
     public function testDefaultCache()
     {
@@ -42,6 +44,9 @@ class CacheAdapterTest extends FeatureTestCase
 
         $defaultCachePoolItem = $this->container->get(CacheItemPoolInterface::class);
         $this->assertInstanceOf(CacheItemPoolInterface::class, $defaultCachePoolItem);
+
+        $simpleCache = $this->container->get(SimpleCacheCacheInterface::class);
+        $this->assertInstanceOf(SimpleCacheCacheInterface::class, $simpleCache);
     }
 
     /**
@@ -99,5 +104,19 @@ class CacheAdapterTest extends FeatureTestCase
                 'expected' => FilesystemAdapter::class,
             ],
         ];
+    }
+
+    /**
+     * @covers \AftDev\Cache\CacheManager::psr16
+     */
+    public function testPsr16HelperFunction()
+    {
+        $default = $this->cacheManager->getDefault();
+
+        $psr16 = $this->cacheManager->psr16($default);
+        $this->assertInstanceOf(SimpleCacheCacheInterface::class, $psr16);
+
+        $viaStatic = CacheManager::psr16($default);
+        $this->assertInstanceOf(SimpleCacheCacheInterface::class, $viaStatic);
     }
 }
