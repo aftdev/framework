@@ -22,6 +22,8 @@ class S3AdapterFactoryTest extends TestCase
     public function testFactory()
     {
         $container = $this->prophesize(ContainerInterface::class);
+        $container->has(Argument::any())->willReturn(false);
+
         $clientFromOptions = [
             'region' => 'us-east-1',
             'version' => 'latest',
