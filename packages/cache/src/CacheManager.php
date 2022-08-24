@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AftDev\Cache;
 
 use AftDev\ServiceManager\AbstractManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter;
+use Symfony\Component\Cache\Psr16Cache;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class CacheManager extends AbstractManager
@@ -68,6 +71,17 @@ class CacheManager extends AbstractManager
             CacheInterface::class.' or '.CacheItemPoolInterface::class,
             is_object($instance) ? get_class($instance) : gettype($instance)
         ));
+    }
+
+    /**
+     * Transform a Psr6 Cache interface to a Psr16Cache.
+     *
+     * @see https://www.php-fig.org/psr/psr-16/#21-cacheinterface
+     * @see https://www.php-fig.org/psr/psr-6/#cacheitempoolinterface
+     */
+    public static function psr16(CacheItemPoolInterface $psr6)
+    {
+        return new Psr16Cache($psr6);
     }
 
     /**

@@ -4,7 +4,9 @@
   "license": "BSD-3-Clause",
   "keywords": [
     "symfony",
-    "cache"
+    "cache",
+    "PSR-6",
+    "PSR-16"
   ],
   "require": {
     "php": "^8.1",

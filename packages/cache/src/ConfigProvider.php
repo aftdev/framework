@@ -4,6 +4,7 @@ namespace AftDev\Cache;
 
 use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\SimpleCache\CacheInterface as SimpleCacheInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class ConfigProvider
@@ -23,6 +24,7 @@ class ConfigProvider
                 CacheManager::class => Factory\CacheManagerFactory::class,
                 CacheInterface::class => Factory\DefaultCacheFactory::class,
                 CacheItemPoolInterface::class => Factory\DefaultCacheFactory::class,
+                SimpleCacheInterface::class => Factory\DefaultPsr16CacheFactory::class,
             ],
         ];
     }
