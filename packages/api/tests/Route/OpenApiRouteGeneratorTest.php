@@ -14,6 +14,14 @@ use Illuminate\Support\LazyCollection;
  */
 final class OpenApiRouteGeneratorTest extends TestCase
 {
+    public function testRoutesWithoutCache()
+    {
+        $generator = new OpenApiRouteGenerator();
+        $routes = $generator->getRoutes($this->getOpenApi());
+
+        $this->assertIsArray($routes);
+    }
+
     public function testGenerator()
     {
         $generator = new OpenApiRouteGenerator();

@@ -2,7 +2,7 @@
 
 namespace AftDev\Console;
 
-use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 
 class ConfigProvider
 {
@@ -52,7 +52,7 @@ class ConfigProvider
     {
         return [
             'abstract_factories' => [
-                'default' => ReflectionAbstractFactory::class,
+                'default' => ResolverAbstractFactory::class,
             ],
         ];
     }

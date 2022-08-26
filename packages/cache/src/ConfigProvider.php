@@ -2,7 +2,7 @@
 
 namespace AftDev\Cache;
 
-use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\SimpleCache\CacheInterface as SimpleCacheInterface;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -52,7 +52,7 @@ class ConfigProvider
                 ],
             ],
             'abstract_factories' => [
-                'default' => ReflectionBasedAbstractFactory::class,
+                'default' => ResolverAbstractFactory::class,
             ],
         ];
     }

@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace AftDev\Api\Route;
 
-use AftDev\Api\Middleware\OpenApiPathHandlerInterface;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\PathItem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 class OpenApiRouteGenerator
 {
+    public const CACHE_NAME = 'api.routes.%s';
+
     private $methodMapping = [
         'get' => 'index', // when no path params.
         'getWithParams' => 'show', // where there is a param
@@ -22,9 +25,40 @@ class OpenApiRouteGenerator
 
     public function __construct(
         private $prefix = '/api',
-        private $routeHandler = OpenApiPathHandlerInterface::class,
         private $namespace = 'App\Controller',
+        private ?CacheItemPoolInterface $cache = null,
     ) {
+    }
+
+    public function getCache($openApi): ?CacheItemInterface
+    {
+        $version = $openApi->info->version ?? 'default';
+        $sanitized = preg_replace('/[^a-zA-Z0-9]+/', '', $version);
+
+        return $this->cache ? $this->cache->getItem(sprintf(self::CACHE_NAME, $sanitized)) : null;
+    }
+
+    /**
+     * Get routes form the given spec.
+     *
+     * Will fetch from cache if it exists.
+     */
+    public function getRoutes(OpenApi $openApi): array
+    {
+        $routeCache = $this->getCache($openApi);
+        if ($routeCache && $routeCache->isHit()) {
+            return $routeCache->get();
+        }
+
+        $generator = $this->generateRoutes($openApi);
+        $routeArray = iterator_to_array($generator, false);
+
+        if ($routeCache) {
+            $routeCache->set($routeArray);
+            $this->cache->save($routeCache);
+        }
+
+        return $routeArray;
     }
 
     /**

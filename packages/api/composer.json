@@ -8,7 +8,6 @@
   ],
   "require": {
     "php": "^8.1",
-    "laminas/laminas-config-aggregator": "^1.7.0",
     "cebe/php-openapi": "^1.7.0",
     "illuminate/support": "^9.0"
   },
@@ -34,6 +33,7 @@
   },
   "suggest": {
     "aftdev/service-manager": "To autoload spec invokable classes",
+    "aftdev/cache": "To automatically cache generated routes",
     "psr/http-server-middleware": "To use the middleware",
     "league/openapi-psr7-validator": "To automatically validate requests"
   },
