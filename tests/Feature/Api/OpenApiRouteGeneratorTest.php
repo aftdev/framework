@@ -12,7 +12,7 @@ use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * @internal
- * @covers \AftDev\Api\Factory\OpenApiRouteGenerator
+ * @covers \AftDev\Api\Route\OpenApiRouteGenerator
  */
 final class OpenApiRouteGeneratorTest extends FeatureTestCase
 {
@@ -39,6 +39,13 @@ final class OpenApiRouteGeneratorTest extends FeatureTestCase
 
         $routes = $generator->getRoutes($spec);
 
+        $this->assertIsArray($routes);
+
+        $cache = $generator->getCache($spec);
+        $this->assertTrue($cache->isHit());
+
+        // When cache exists.
+        $routes = $generator->getRoutes($spec);
         $this->assertIsArray($routes);
     }
 }
