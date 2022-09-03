@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Api\OpenApiManager
  */
 final class OpenApiManagerTest extends TestCase
@@ -34,7 +35,7 @@ final class OpenApiManagerTest extends TestCase
     public function testUnknownSpec()
     {
         $this->expectException(\ValueError::class);
-        $this->expectExceptionMessage('File does not exists');
+        $this->expectExceptionMessage('Could not find the openapi spec file');
 
         $openApiManager = new OpenApiManager('invalid.file');
 

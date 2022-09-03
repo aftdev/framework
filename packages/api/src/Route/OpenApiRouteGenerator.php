@@ -24,8 +24,9 @@ class OpenApiRouteGenerator
     ];
 
     public function __construct(
-        private $prefix = '/api',
-        private $namespace = 'App\Controller',
+        private string $prefix = '/api',
+        private string $namespace = 'App\Controller',
+        private ?ParamTranslatorInterface $paramTranslator = null,
         private ?CacheItemPoolInterface $cache = null,
     ) {
     }
@@ -42,6 +43,8 @@ class OpenApiRouteGenerator
      * Get routes form the given spec.
      *
      * Will fetch from cache if it exists.
+     *
+     * @return Route[]
      */
     public function getRoutes(OpenApi $openApi): array
     {
@@ -78,33 +81,55 @@ class OpenApiRouteGenerator
 
     private function getRoutesForPath(string $uri, PathItem $path): \Generator
     {
-        $pathCommonParams = [
-            'uri' => $this->prefixUri($uri),
-        ];
-
+        $prefixedUri = $this->prefixUri($uri);
         $pathParams = $this->getPathParameters($path->parameters);
 
         foreach ($path->getOperations() as $method => $operation) {
-            yield $pathCommonParams + [
+            $params = [
+                'uri' => $this->swapParameters(
+                    $prefixedUri,
+                    array_merge(
+                        $pathParams,
+                        $this->getPathParameters($operation->parameters)
+                    ),
+                ),
                 'method' => $method,
                 'name' => $operation->operationId ?? 'api.'.Str::camel("{$method}{$uri}"),
-                'params' => $pathParams + $this->getPathParameters($operation->parameters),
                 'handler' => $this->getHandlerNameForOperation($uri, $method),
             ];
+
+            yield new Route(...$params);
         }
     }
 
-    private function getPathParameters(array $parameters)
+    private function swapParameters(string $uri, array $parameters)
+    {
+        if (!$this->paramTranslator) {
+            return $uri;
+        }
+
+        // replacement list.
+        $translations = [];
+        foreach ($parameters as $param => $options) {
+            $translations["/{{$param}}"] =
+                $this->paramTranslator->translate(
+                    "/{{$param}}",
+                    ...$options,
+                );
+        }
+
+        return Str::swap($translations, $uri);
+    }
+
+    private function getPathParameters(array $parameters): array
     {
         $pathParams = array_filter($parameters, fn ($param) => 'path' == $param->in);
         $paramInfo = [];
         foreach ($pathParams as $param) {
             $paramInfo[$param->name] = [
                 'required' => $param->required,
-                'schema' => [
-                    'type' => $param->schema->type,
-                    'format' => $param->schema->format,
-                ],
+                'type' => $param->schema->type,
+                'format' => $param->schema->format,
             ];
         }
 

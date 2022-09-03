@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AftDev\Api;
 
+use AftDev\Api\Route\FastRouterParamTranslator;
 use AftDev\Api\Route\HandlerMapper;
+use AftDev\Api\Route\ParamTranslatorInterface;
 use cebe\openapi\spec\OpenApi;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 
@@ -27,6 +29,10 @@ class ConfigProvider
                 OpenApi::class => Factory\CurrentOpenApiVersionFactory::class,
                 OpenApiManager::class => Factory\OpenApiManagerFactory::class,
                 HandlerMapper::class => InvokableFactory::class,
+                FastRouterParamTranslator::class => InvokableFactory::class,
+            ],
+            'aliases' => [
+                ParamTranslatorInterface::class => FastRouterParamTranslator::class,
             ],
         ];
     }

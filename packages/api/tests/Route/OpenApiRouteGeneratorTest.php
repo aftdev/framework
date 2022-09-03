@@ -1,16 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AftDevTest\Api\Route;
 
 use AftDev\Api\Route\OpenApiRouteGenerator;
+use AftDev\Api\Route\ParamTranslatorInterface;
 use AftDev\Test\TestCase;
 use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
 use Illuminate\Support\LazyCollection;
+use Prophecy\Argument;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Api\Route\OpenApiRouteGenerator
+ * @covers \AftDev\Api\Route\Route
  */
 final class OpenApiRouteGeneratorTest extends TestCase
 {
@@ -29,7 +35,7 @@ final class OpenApiRouteGeneratorTest extends TestCase
 
         $found = [];
         foreach ($collection as $i) {
-            $found[$i['uri']][$i['method']] = $i['handler'];
+            $found[$i->uri][$i->method] = $i->handler;
         }
 
         $expected = [
@@ -57,48 +63,42 @@ final class OpenApiRouteGeneratorTest extends TestCase
             '/api/companies/{companyId}/employees/{employeeId}/salary/{category}' => [
                 'get' => 'App\Controller\Salaries@showByCompanyEmployeeAndCategory',
             ],
-            '/api/test/param/{intParam}/{stringParam}/{optionalParam}' => [
-                'get' => 'App\Controller\Params@showByTestAndIntParamStringParamOptionalParam',
+            '/api/test/param/{intParam}/{stringParam}/{dateParam}/{optionalParam}' => [
+                'get' => 'App\Controller\Params@showByTestAndIntParamStringParamDateParamOptionalParam',
             ],
         ];
 
         $this->assertEquals($expected, $found);
+    }
 
-        // Test Parameters
-        $testParams = $collection
-            ->where('uri', '/api/test/param/{intParam}/{stringParam}/{optionalParam}')
-            ->firstWhere('method', 'get')
-        ;
-        $this->assertEquals([
-            'intParam' => [
-                'required' => true,
-                'schema' => [
-                    'type' => 'integer',
-                    'format' => 'int32',
-                ],
-            ],
-            'numberParam' => [
-                'required' => true,
-                'schema' => [
-                    'type' => 'number',
-                    'format' => 'double',
-                ],
-            ],
-            'dateParam' => [
-                'required' => true,
-                'schema' => [
-                    'type' => 'string',
-                    'format' => 'date',
-                ],
-            ],
-            'optionalParam' => [
-                'required' => false,
-                'schema' => [
-                    'type' => 'string',
-                    'format' => null,
-                ],
-            ],
-        ], $testParams['params']);
+    public function testRouteParamTranslation()
+    {
+        $paramTranslator = $this->prophesize(ParamTranslatorInterface::class);
+        $paramTranslator->translate(Argument::cetera())->willReturn('/{:translated}');
+
+        $generator = new OpenApiRouteGenerator(
+            paramTranslator: $paramTranslator->reveal(),
+        );
+
+        $collection = $generator->generateRoutes($this->getOpenApi());
+        $found = [];
+        foreach ($collection as $i) {
+            if (!in_array($i->uri, $found)) {
+                $found[] = $i->uri;
+            }
+        }
+
+        $expected = [
+            '/api/companies',
+            '/api/companies/{:translated}',
+            '/api/companies/{:translated}/employees',
+            '/api/companies/{:translated}/employees/{:translated}',
+            '/api/companies/{:translated}/employees/{:translated}/salary',
+            '/api/companies/{:translated}/employees/{:translated}/salary/{:translated}',
+            '/api/test/param/{:translated}/{:translated}/{:translated}/{:translated}',
+        ];
+
+        $this->assertEquals($expected, $found);
     }
 
     protected function getOpenApi(): OpenApi

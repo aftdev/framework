@@ -41,6 +41,6 @@ class OpenApiManagerFactory
             return null;
         }
 
-        return current($request->getHeader(OpenApiManager::VERSION_HEADER_NAME, null));
+        return $request->getHeader(OpenApiManager::VERSION_HEADER_NAME, null)[0] ?? null;
     }
 }

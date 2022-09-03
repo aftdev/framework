@@ -102,7 +102,7 @@ class OpenApiManager
     {
         $info = new SplFileInfo($this->specFile);
         if (!$info->isFile()) {
-            throw new \ValueError('File does not exists');
+            throw new \ValueError('Could not find the openapi spec file');
         }
 
         switch ($info->getExtension()) {
