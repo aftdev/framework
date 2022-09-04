@@ -7,6 +7,7 @@ use AftDev\Test\TestCase;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Cache\Factory\MemcachedAdapterFactory
  */
 class MemcachedAdapterFactoryTest extends TestCase

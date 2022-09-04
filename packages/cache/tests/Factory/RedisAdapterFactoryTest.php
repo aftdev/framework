@@ -7,6 +7,7 @@ use AftDev\Test\TestCase;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Cache\Factory\RedisAdapterFactory
  */
 class RedisAdapterFactoryTest extends TestCase

@@ -11,6 +11,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\Middleware\ResolveMiddleware
  */
 final class ResolveMiddlewareTest extends TestCase

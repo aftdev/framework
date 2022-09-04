@@ -10,6 +10,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\Factory\ResolverAbstractFactory
  * @covers \AftDev\ServiceManager\Resolver
  */

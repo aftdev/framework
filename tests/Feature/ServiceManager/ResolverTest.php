@@ -7,6 +7,7 @@ use AftDev\Test\FeatureTestCase;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\ConfigProvider
  * @covers \AftDev\ServiceManager\Resolver\ResolverFactory
  */

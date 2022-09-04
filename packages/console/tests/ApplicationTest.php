@@ -9,6 +9,7 @@ use AftDev\Test\TestCase;
  * Class ApplicationTest.
  *
  * @internal
+ *
  * @covers \AftDev\Console\Application
  */
 class ApplicationTest extends TestCase

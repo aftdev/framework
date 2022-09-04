@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\Factory\AbstractManagerFactory
  */
 class AbstractManagerFactoryTest extends TestCase

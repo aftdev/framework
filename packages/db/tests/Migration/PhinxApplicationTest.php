@@ -8,6 +8,7 @@ use Phinx\Config\Config;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Db\Migration\PhinxApplication
  */
 class PhinxApplicationTest extends TestCase

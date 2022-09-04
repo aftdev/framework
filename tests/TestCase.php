@@ -7,6 +7,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @internal
+ *
  * @coversNothing
  */
 class TestCase extends PhpUnitTestCase

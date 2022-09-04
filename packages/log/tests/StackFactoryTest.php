@@ -13,6 +13,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Log\Factory\StackFactory
  */
 class StackFactoryTest extends TestCase

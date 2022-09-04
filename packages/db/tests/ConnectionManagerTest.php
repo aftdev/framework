@@ -8,6 +8,7 @@ use AftDev\Test\TestCase;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Db\ConnectionManager
  */
 class ConnectionManagerTest extends TestCase

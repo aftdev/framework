@@ -8,6 +8,7 @@ use AftDev\Test\TestCase;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\Resolver\RuleBuilder
  */
 class RuleBuilderTest extends TestCase

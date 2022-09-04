@@ -9,6 +9,7 @@ use Illuminate\Container\Container;
 
 /**
  * @internal
+ *
  * @covers \AftDev\DbEloquent\Capsule\CapsuleManager
  */
 class CapsuleManagerTest extends TestCase

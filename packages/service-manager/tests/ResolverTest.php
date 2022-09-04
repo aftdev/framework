@@ -9,6 +9,7 @@ use Laminas\ServiceManager\ServiceManager;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\Resolver
  */
 class ResolverTest extends TestCase

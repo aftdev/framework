@@ -9,6 +9,7 @@ use Psr\Http\Server\MiddlewareInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\Middleware\ResolveMiddlewareFactory
  */
 final class ResolveMiddlewareFactoryTest extends TestCase
