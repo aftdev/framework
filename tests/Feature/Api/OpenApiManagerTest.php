@@ -9,7 +9,9 @@ use cebe\openapi\spec\OpenApi;
 
 /**
  * @internal
+ *
  * @coversDefaultClass \AftDev\Api\OpenApiManager
+ *
  * @covers \AftDev\Api\ConfigProvider
  * @covers \AftDev\Api\OpenApiManager
  */

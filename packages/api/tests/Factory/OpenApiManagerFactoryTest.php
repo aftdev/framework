@@ -14,6 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Api\Factory\OpenApiManagerFactory
  */
 final class OpenApiManagerFactoryTest extends TestCase

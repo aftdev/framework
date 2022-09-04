@@ -30,6 +30,7 @@ class ConfigProvider
                 OpenApiManager::class => Factory\OpenApiManagerFactory::class,
                 HandlerMapper::class => InvokableFactory::class,
                 FastRouterParamTranslator::class => InvokableFactory::class,
+                \League\OpenAPIValidation\PSR15\ValidationMiddleware::class => Factory\RequestValidationMiddlewareFactory::class,
             ],
             'aliases' => [
                 ParamTranslatorInterface::class => FastRouterParamTranslator::class,

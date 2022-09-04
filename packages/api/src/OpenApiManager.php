@@ -8,6 +8,7 @@ use AftDev\Api\Exception\UnknownVersionException;
 use AftDev\ServiceManager\Resolver;
 use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
+use Psr\Cache\CacheItemPoolInterface;
 use SplFileInfo;
 
 class OpenApiManager
@@ -25,6 +26,7 @@ class OpenApiManager
         array $versions = [],
         ?string $currentVersion = null,
         private ?Resolver $resolver = null,
+        private ?CacheItemPoolInterface $cache = null,
     ) {
         $this->setVersions($versions);
         $this->setCurrentVersion($currentVersion ?? self::BASE_VERSION);

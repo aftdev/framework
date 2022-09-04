@@ -12,6 +12,7 @@ use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Api\Route\OpenApiRouteGenerator
  */
 final class OpenApiRouteGeneratorTest extends FeatureTestCase
