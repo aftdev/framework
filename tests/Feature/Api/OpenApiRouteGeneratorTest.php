@@ -33,6 +33,16 @@ final class OpenApiRouteGeneratorTest extends FeatureTestCase
         $this->cache->clear();
     }
 
+    /**
+     * @covers \AftDev\Api\Factory\OpenApiRouteGeneratorFactory
+     */
+    public function testFactory()
+    {
+        $generator = $this->container->get(OpenApiRouteGenerator::class);
+
+        $this->assertInstanceOf(OpenApiRouteGenerator::class, $generator);
+    }
+
     public function testCache()
     {
         $generator = new OpenApiRouteGenerator(cache: $this->cache);

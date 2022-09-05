@@ -6,6 +6,7 @@ namespace AftDev\Api;
 
 use AftDev\Api\Route\FastRouterParamTranslator;
 use AftDev\Api\Route\HandlerMapper;
+use AftDev\Api\Route\OpenApiRouteGenerator;
 use AftDev\Api\Route\ParamTranslatorInterface;
 use cebe\openapi\spec\OpenApi;
 use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -28,6 +29,7 @@ class ConfigProvider
             'factories' => [
                 OpenApi::class => Factory\CurrentOpenApiVersionFactory::class,
                 OpenApiManager::class => Factory\OpenApiManagerFactory::class,
+                OpenApiRouteGenerator::class => Factory\OpenApiRouteGeneratorFactory::class,
                 HandlerMapper::class => InvokableFactory::class,
                 FastRouterParamTranslator::class => InvokableFactory::class,
                 \League\OpenAPIValidation\PSR15\ValidationMiddleware::class => Factory\RequestValidationMiddlewareFactory::class,
