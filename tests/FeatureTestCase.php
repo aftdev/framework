@@ -100,8 +100,12 @@ class FeatureTestCase extends TestCase
         return $mock;
     }
 
-    protected function overrideConfig($configName, $configValue)
+    protected function overrideConfig(string|array $configName, $configValue)
     {
+        if (is_array($configName)) {
+            $configName = join('.', $configName);
+        }
+
         $config = $this->container->get('config');
 
         Arr::set($config, $configName, $configValue);

@@ -46,6 +46,8 @@ class ConfigProvider
             'namespace' => 'App/Api/Controller',
             'version' => null,
             'versions' => [],
+            // Cache store to use (requires aftdev/cache-manager)
+            'cache' => null,
         ];
     }
 }

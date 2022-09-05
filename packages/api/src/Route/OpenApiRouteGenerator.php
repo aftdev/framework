@@ -13,7 +13,7 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class OpenApiRouteGenerator
 {
-    public const CACHE_NAME = 'api.routes.%s';
+    public const CACHE_NAME = 'api.routes.{:version}';
 
     private $methodMapping = [
         'get' => 'index', // when no path params.
@@ -33,10 +33,20 @@ class OpenApiRouteGenerator
 
     public function getCache($openApi): ?CacheItemInterface
     {
-        $version = $openApi->info->version ?? 'default';
-        $sanitized = preg_replace('/[^a-zA-Z0-9]+/', '', $version);
+        if (null === $this->cache) {
+            return null;
+        }
 
-        return $this->cache ? $this->cache->getItem(sprintf(self::CACHE_NAME, $sanitized)) : null;
+        $version = $openApi->info->version ?? 'default';
+
+        return $this->cache->getItem(
+            Str::swap(
+                [
+                    '{:version}' => preg_replace('/[^a-zA-Z0-9]+/', '', $version),
+                ],
+                self::CACHE_NAME,
+            )
+        );
     }
 
     /**

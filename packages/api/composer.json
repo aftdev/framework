@@ -33,7 +33,7 @@
   },
   "suggest": {
     "aftdev/service-manager": "To autoload spec invokable classes",
-    "aftdev/cache": "To automatically cache generated routes",
+    "aftdev/cache": "To automatically cache generated specs and routes",
     "psr/http-server-middleware": "To use the middleware",
     "league/openapi-psr7-validator": "To automatically validate requests"
   },

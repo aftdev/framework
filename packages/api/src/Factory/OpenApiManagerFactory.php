@@ -13,6 +13,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class OpenApiManagerFactory
 {
+    use InteractsWithCacheTrait;
+
     public function __invoke(ContainerInterface $container)
     {
         $config = $container->get('config')[ConfigProvider::CONFIG_KEY];
@@ -20,11 +22,14 @@ class OpenApiManagerFactory
 
         $version = $this->getApiVersionFromHeader($container) ?? $config['version'] ?? null;
 
+        $cache = $this->getCache($container, $config);
+
         return new OpenApiManager(
             specFile: $config['spec'],
             currentVersion: $version,
             versions: $config['versions'] ?? [],
             resolver: $resolver,
+            cache: $cache ?? null,
         );
     }
 

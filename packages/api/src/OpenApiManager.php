@@ -8,13 +8,15 @@ use AftDev\Api\Exception\UnknownVersionException;
 use AftDev\ServiceManager\Resolver;
 use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
+use Illuminate\Support\Str;
+use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use SplFileInfo;
 
 class OpenApiManager
 {
     public const VERSION_HEADER_NAME = 'X-Api-Version';
-
+    public const CACHE_NAME = 'api.specs.{:version}';
     private const BASE_VERSION = '_base';
 
     private array $cachedVersions = [];
@@ -67,18 +69,46 @@ class OpenApiManager
             return $this->cachedVersions[$version];
         }
 
-        $versionMutations = $this->getVersionMutations($version);
-
-        $versionOpenApi = $this->getBase();
-
-        // Override Version
-        if (self::BASE_VERSION != $version) {
-            $versionOpenApi->info->version = $version;
+        $cache = $this->getCache($version);
+        if ($cache && $cache->isHit()) {
+            $versionOpenApi = $cache->get();
         }
 
-        $this->applyMutations($versionOpenApi, $versionMutations);
+        if (!isset($versionOpenApi)) {
+            $versionMutations = $this->getVersionMutations($version);
+
+            $versionOpenApi = $this->getBase();
+
+            // Override Version
+            if (self::BASE_VERSION != $version) {
+                $versionOpenApi->info->version = $version;
+            }
+
+            $this->applyMutations($versionOpenApi, $versionMutations);
+
+            if ($this->cache) {
+                $cache->set($versionOpenApi);
+                $this->cache->save($cache);
+            }
+        }
 
         return $this->cachedVersions[$version] = $versionOpenApi;
+    }
+
+    public function getCache(string $version = 'default'): ?CacheItemInterface
+    {
+        if (null === $this->cache) {
+            return null;
+        }
+
+        return $this->cache->getItem(
+            Str::swap(
+                [
+                    '{:version}' => preg_replace('/[^a-zA-Z0-9\.-_]+/', '', $version),
+                ],
+                self::CACHE_NAME,
+            )
+        );
     }
 
     /**
