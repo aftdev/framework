@@ -7,6 +7,9 @@ use Laminas\ConfigAggregator\PhpFileProvider;
 
 $processors = [];
 
+$env = getenv('APP_ENV') ?: 'production';
+$envFolders = [$env, 'local'];
+
 $aggregator = new ConfigAggregator(
     [
         \AftDev\ServiceManager\ConfigProvider::class,
@@ -19,7 +22,7 @@ $aggregator = new ConfigAggregator(
         \AftDev\Messenger\ConfigProvider::class,
         \AftDev\Api\ConfigProvider::class,
 
-        new PhpFileProvider(realpath(__DIR__).'/autoload/{{,*.}global,{,*.}local}.php'),
+        new PhpFileProvider(realpath(__DIR__).'/autoload/{{,*.}global,{'.join(',', $envFolders).'}/{,*}}.php'),
     ],
     null,
     $processors
