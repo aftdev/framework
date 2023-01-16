@@ -7,6 +7,7 @@ use AftDev\Api\OpenApiManager;
 use AftDev\Cache\CacheManager;
 use AftDev\Test\FeatureTestCase;
 use cebe\openapi\spec\OpenApi;
+use cebe\openapi\spec\Server;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**
@@ -70,7 +71,7 @@ final class OpenApiManagerTest extends FeatureTestCase
 
         $openApiManager = $this->container->get(OpenApiManager::class);
 
-        $openApi = $openApiManager->getVersion('2019-01-02');
+        $openApiManager->getVersion('2019-01-02');
 
         $this->assertEquals(OpenApiManager::class, $apiManagerClass);
     }
@@ -91,16 +92,18 @@ final class OpenApiManagerTest extends FeatureTestCase
 
         $openApiManager = $this->container->get(OpenApiManager::class);
         $openApiManager->getCurrentVersion();
+        $openApiManager->getVersion('2019-01-02');
 
         $this->assertTrue($phpStore->hasItem('api.specs._base'));
-
-        return $phpStore;
+        $this->assertTrue($phpStore->hasItem('api.specs.20190102'));
     }
 
     /**
      * Make sure the cache is being reused.
      *
      * @depends testCache
+     *   Previous function will add items into the cache. This test make sure they
+     *   are used
      *
      * @param mixed $phpStore
      */
@@ -118,5 +121,29 @@ final class OpenApiManagerTest extends FeatureTestCase
 
         $phpStore->clear();
         $this->assertInstanceOf(OpenApi::class, $spec);
+    }
+
+    /**
+     * @covers \AftDev\Api\Factory\OpenApiManagerFactory
+     */
+    public function testServers()
+    {
+        $this->overrideConfig(
+            [ConfigProvider::CONFIG_KEY, 'servers'],
+            [
+                'serverA' => [
+                    'url' => 'https://test.com',
+                    'description' => 'xyz',
+                ],
+            ],
+        );
+
+        $openApiManager = $this->container->get(OpenApiManager::class);
+
+        $servers = $openApiManager->getCurrentVersion()->servers;
+
+        $this->assertInstanceOf(Server::class, current($servers));
+        $this->assertEquals('https://test.com', current($servers)->url);
+        $this->assertEquals('xyz', current($servers)->description);
     }
 }

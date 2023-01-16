@@ -9,11 +9,13 @@ validator.
 
 ```php
 [
-  'prefix': 'api',
   'spec' => '/path/to/openapi.yml',
-  'namespace' => 'App/Api/Controller',
+  'namespace' => 'App\Api\Controller',
   'mutations' => [],
   'versions' => [],
+  'servers' => [
+    'url' => 'https://api.server.com',
+  ],
 ]
 ```
 
@@ -123,33 +125,48 @@ class PathController
 }
 ```
 
-## Middlewares ([psr-15](https://www.php-fig.org/psr/psr-15/))
-
-### OpenApiMiddleware
-
-This middleware will setup the current version of the version being used for the
-current request and inject the OpenApi object to the request.
-
-## Handler ([psr-15](https://www.php-fig.org/psr/psr-15/))
-
-### OpenApiPathHandler Abstract
-
-This is the default handler that is injected in the router of your choice This
-handler will
-
-- make sure the incoming request is valid (using phpleague validator)
-- call the appropirate controller action (depending on the openapi operation)
-- make sure the outcoming response is valid (using phpleague validator)
-
-#### MezzioApiHandler
-
 ## Routing
 
 This package comes with a router helper that will autogenerate route
 configuration from an openapi spec object.
 
-This configuration can then be used by your router of choice (like fastRouter or
-Mezzio Application) Service that return an array of routes and controllers /
-params we need a mapper for each router type.
+This configuration can then be used by your router of choice (like FastRouter or
+Mezzio Application)
 
-TODO - routes per version. (how to handle caching?)
+```php
+
+
+```
+
+### Route parameters
+
+Each router have a different parameter format, by default our
+OpenApiRouteGenerator is setup to use the FastRouter format.
+
+To override this, simply create a new translator and inject it to the Route
+Generator (via container dependency injection or manually)
+
+```php
+  'aliases' => [
+      ParamTranslatorInterface::class => YourTranslator::class
+  ],
+```
+
+## OpenAPI request validator via middleware (PSR-15 Middleware Factory)
+
+This package provides a middleware factory that returns a PSR-15 compatible
+middleware that will validate that all incoming requests matches the format
+defined by your openapi spec.
+
+This middleware also validate that whatever data is sent back from your
+controllers match the schemas defined in the spec
+
+The middleware uses the openapi validator from
+https://github.com/thephpleague/openapi-psr7-validator
+
+```php
+$openApiRequestValidatorMiddleware = $container->get(\League\OpenAPIValidation\PSR15\ValidationMiddleware::class);
+
+// Use middleware when defining your openapi routes
+// Actual implementation will depending on your router.
+```

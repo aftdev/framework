@@ -39,31 +39,31 @@ final class OpenApiRouteGeneratorTest extends TestCase
         }
 
         $expected = [
-            '/api/companies' => [
+            '/companies' => [
                 'get' => 'App\Controller\Companies@index',
                 'post' => 'App\Controller\Companies@create',
                 'options' => 'App\Controller\Companies@options',
                 'head' => 'App\Controller\Companies@head',
                 'trace' => 'App\Controller\Companies@trace',
             ],
-            '/api/companies/{companyId}' => [
+            '/companies/{companyId}' => [
                 'get' => 'App\Controller\Companies@show',
                 'put' => 'App\Controller\Companies@update',
                 'delete' => 'App\Controller\Companies@delete',
             ],
-            '/api/companies/{companyId}/employees' => [
+            '/companies/{companyId}/employees' => [
                 'get' => 'App\Controller\Employees@indexByCompany',
             ],
-            '/api/companies/{companyId}/employees/{employeeId}' => [
+            '/companies/{companyId}/employees/{employeeId}' => [
                 'get' => 'App\Controller\Employees@showByCompany',
             ],
-            '/api/companies/{companyId}/employees/{employeeId}/salary' => [
+            '/companies/{companyId}/employees/{employeeId}/salary' => [
                 'get' => 'App\Controller\Salaries@indexByCompanyEmployee',
             ],
-            '/api/companies/{companyId}/employees/{employeeId}/salary/{category}' => [
+            '/companies/{companyId}/employees/{employeeId}/salary/{category}' => [
                 'get' => 'App\Controller\Salaries@showByCompanyEmployeeAndCategory',
             ],
-            '/api/test/param/{intParam}/{stringParam}/{dateParam}/{optionalParam}' => [
+            '/test/param/{intParam}/{stringParam}/{dateParam}/{optionalParam}' => [
                 'get' => 'App\Controller\Params@showByTestAndIntParamStringParamDateParamOptionalParam',
             ],
         ];
@@ -89,13 +89,13 @@ final class OpenApiRouteGeneratorTest extends TestCase
         }
 
         $expected = [
-            '/api/companies',
-            '/api/companies/{:translated}',
-            '/api/companies/{:translated}/employees',
-            '/api/companies/{:translated}/employees/{:translated}',
-            '/api/companies/{:translated}/employees/{:translated}/salary',
-            '/api/companies/{:translated}/employees/{:translated}/salary/{:translated}',
-            '/api/test/param/{:translated}/{:translated}/{:translated}/{:translated}',
+            '/companies',
+            '/companies/{:translated}',
+            '/companies/{:translated}/employees',
+            '/companies/{:translated}/employees/{:translated}',
+            '/companies/{:translated}/employees/{:translated}/salary',
+            '/companies/{:translated}/employees/{:translated}/salary/{:translated}',
+            '/test/param/{:translated}/{:translated}/{:translated}/{:translated}',
         ];
 
         $this->assertEquals($expected, $found);

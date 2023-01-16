@@ -7,6 +7,7 @@ use AftDev\Api\OpenApiManager;
 use AftDev\ServiceManager\Resolver;
 use AftDev\Test\TestCase;
 use cebe\openapi\spec\OpenApi;
+use cebe\openapi\spec\Server;
 use Prophecy;
 use Psr\Container\ContainerInterface;
 
@@ -179,5 +180,34 @@ final class OpenApiManagerTest extends TestCase
             'test-version',
             $openApi->info->version
         );
+    }
+
+    public function testServers()
+    {
+        $openApiManager = new OpenApiManager(
+            realpath(__DIR__.'/specs/petstore.yaml'),
+            servers: [
+                'server_a' => [
+                    'url' => 'https://serverA.com',
+                ],
+                'server_b' => [
+                    'url' => 'https://serverB.com',
+                ],
+            ],
+        );
+
+        $openApi = $openApiManager->getCurrentVersion();
+
+        $this->assertCount(2, $openApi->servers);
+        $serverA = current($openApi->servers);
+        $serverB = last($openApi->servers);
+
+        $this->assertInstanceOf(Server::class, $serverA);
+        $this->assertInstanceOf(Server::class, $serverB);
+
+        $this->assertSame('https://serverA.com', $serverA->url);
+        $this->assertSame('https://serverB.com', $serverB->url);
+
+        $this->assertTrue($openApi->validate());
     }
 }

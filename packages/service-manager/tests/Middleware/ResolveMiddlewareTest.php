@@ -7,6 +7,7 @@ use AftDev\ServiceManager\Resolver;
 use AftDev\Test\TestCase;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
@@ -34,7 +35,7 @@ final class ResolveMiddlewareTest extends TestCase
         $handlerName = 'XXXX';
         $resolver = $this->prophesize(Resolver::class);
         $resolver
-            ->call($handlerName, $attributes)
+            ->call($handlerName, $attributes + [ServerRequestInterface::class => $request])
             ->shouldBeCalledOnce()
             ->willReturn($response->reveal())
         ;

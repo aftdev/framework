@@ -21,11 +21,13 @@ class OpenApiManagerFactory
         $resolver = $container->has(Resolver::class) ? $container->get(Resolver::class) : null;
 
         $version = $this->getApiVersionFromHeader($container) ?? $config['version'] ?? null;
+        $servers = $config['servers'] ?? [];
 
         $cache = $this->getCache($container, $config);
 
         return new OpenApiManager(
             specFile: $config['spec'],
+            servers: $servers,
             currentVersion: $version,
             versions: $config['versions'] ?? [],
             resolver: $resolver,

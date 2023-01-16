@@ -17,9 +17,7 @@ class FastRouterParamTranslator implements ParamTranslatorInterface
     {
         $name = trim($value, '/{}');
 
-        $reg = $this->mapping[$type]
-            // ?? $this->mapping[$type+'-'+$format]
-            ?? false;
+        $reg = $this->mapping[$type] ?? false;
         if ($reg) {
             $name .= ':'.$reg;
         }

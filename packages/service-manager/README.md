@@ -209,7 +209,7 @@ return static function (Application $app, MiddlewareFactory $factory, ContainerI
 
   $resolveMiddlewareFactory = $container->get(ResolveMiddlewareFactory::class);
 
-  $app->get('/api/ping', $resolveMiddlewareFactory->prepare(App\Handler\PingHandler::class.'@otherAction'), 'api.ping.factory');
+  $app->get('/api/ping', $resolveMiddlewareFactory->prepare(App\Handler\PingHandler::class.'@otherAction'));
 }
 ```
 

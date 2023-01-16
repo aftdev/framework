@@ -18,12 +18,10 @@ class OpenApiRouteGeneratorFactory
         $paramTranslator = $container->get(ParamTranslatorInterface::class);
 
         $config = $container->get('config')[ConfigProvider::CONFIG_KEY];
-        $prefix = $config['prefix'] ?? null;
-        $namespace = $config['prefix'] ?? 'App/Controller';
+        $namespace = $config['namespace'] ?? 'App\Controller';
         $cache = $this->getCache($container, $config);
 
         return new OpenApiRouteGenerator(
-            prefix: $prefix,
             namespace: $namespace,
             paramTranslator: $paramTranslator,
             cache: $cache,

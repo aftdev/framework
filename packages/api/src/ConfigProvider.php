@@ -43,9 +43,13 @@ class ConfigProvider
     public function getApiConfig()
     {
         return [
-            'prefix' => 'api',
+            'servers' => [
+                'default' => [
+                    'url' => 'https://api.your-site.com',
+                ],
+            ],
             'spec' => 'config/openapi/openapi.yml',
-            'namespace' => 'App/Api/Controller',
+            'namespace' => 'App\Api\Controller',
             'version' => null,
             'versions' => [],
             // Cache store to use (requires aftdev/cache-manager)

@@ -24,7 +24,6 @@ class OpenApiRouteGenerator
     ];
 
     public function __construct(
-        private string $prefix = '/api',
         private string $namespace = 'App\Controller',
         private ?ParamTranslatorInterface $paramTranslator = null,
         private ?CacheItemPoolInterface $cache = null,
@@ -84,27 +83,21 @@ class OpenApiRouteGenerator
         }
     }
 
-    private function prefixUri(string $path): string
-    {
-        return Str::of($path)->start($this->prefix)->start('/')->toString();
-    }
-
     private function getRoutesForPath(string $uri, PathItem $path): \Generator
     {
-        $prefixedUri = $this->prefixUri($uri);
         $pathParams = $this->getPathParameters($path->parameters);
 
         foreach ($path->getOperations() as $method => $operation) {
             $params = [
                 'uri' => $this->swapParameters(
-                    $prefixedUri,
+                    $uri,
                     array_merge(
                         $pathParams,
                         $this->getPathParameters($operation->parameters)
                     ),
                 ),
                 'method' => $method,
-                'name' => $operation->operationId ?? 'api.'.Str::camel("{$method}{$uri}"),
+                'name' => 'api.'.($operation->operationId ?? Str::camel("{$method}{$uri}")),
                 'handler' => $this->getHandlerNameForOperation($uri, $method),
             ];
 

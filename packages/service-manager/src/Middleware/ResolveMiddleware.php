@@ -21,6 +21,7 @@ class ResolveMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $attributes = $request->getAttributes();
+        $attributes[ServerRequestInterface::class] = $request;
 
         return $this->resolver->call($this->callable, $attributes);
     }

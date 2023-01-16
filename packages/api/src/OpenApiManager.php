@@ -8,6 +8,7 @@ use AftDev\Api\Exception\UnknownVersionException;
 use AftDev\ServiceManager\Resolver;
 use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
+use cebe\openapi\spec\Server;
 use Illuminate\Support\Str;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -26,6 +27,7 @@ class OpenApiManager
     public function __construct(
         private string $specFile,
         array $versions = [],
+        private array $servers = [],
         ?string $currentVersion = null,
         private ?Resolver $resolver = null,
         private ?CacheItemPoolInterface $cache = null,
@@ -79,9 +81,19 @@ class OpenApiManager
 
             $versionOpenApi = $this->getBase();
 
-            // Override Version
+            // Override Version.
             if (self::BASE_VERSION != $version) {
                 $versionOpenApi->info->version = $version;
+            }
+
+            // Add Servers.
+            $servers = array_map(
+                fn ($s) => new Server($s),
+                $this->servers,
+            );
+
+            if ($servers) {
+                $versionOpenApi->servers = $servers;
             }
 
             $this->applyMutations($versionOpenApi, $versionMutations);
