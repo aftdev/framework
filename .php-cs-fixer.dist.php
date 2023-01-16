@@ -17,6 +17,7 @@ $config
         'phpdoc_align' => false,
         'phpdoc_annotation_without_dot' => false,
         'single_import_per_statement' => false,
+        'global_namespace_import' => false,
     ])
 ;
 
