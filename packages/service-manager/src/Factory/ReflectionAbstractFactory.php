@@ -6,8 +6,6 @@ use AftDev\ServiceManager\Resolver;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Psr\Container\ContainerInterface;
-use ReflectionClass;
-use ReflectionException;
 
 class ReflectionAbstractFactory implements AbstractFactoryInterface
 {
@@ -18,7 +16,7 @@ class ReflectionAbstractFactory implements AbstractFactoryInterface
 
         try {
             return $resolver->resolveClass($requestedName, $options ?? []);
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             throw new ServiceNotFoundException(
                 sprintf(
                     'Unable to create service "%s"; unable to resolve a parameter',
@@ -40,7 +38,7 @@ class ReflectionAbstractFactory implements AbstractFactoryInterface
 
     protected function canCallConstructor($requestedName)
     {
-        $constructor = (new ReflectionClass($requestedName))->getConstructor();
+        $constructor = (new \ReflectionClass($requestedName))->getConstructor();
 
         return null === $constructor || $constructor->isPublic();
     }

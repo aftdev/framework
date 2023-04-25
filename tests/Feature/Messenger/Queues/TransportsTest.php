@@ -12,6 +12,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Messenger\Queue\Factory\SymfonyTransportAbstractFactory
  */
 final class TransportsTest extends FeatureTestCase

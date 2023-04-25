@@ -18,8 +18,6 @@ class ConnectionManager
 
     /**
      * ConnectionManager constructor.
-     *
-     * @param $connections
      */
     public function __construct(array $connections)
     {

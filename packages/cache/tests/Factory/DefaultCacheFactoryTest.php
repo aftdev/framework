@@ -10,6 +10,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @coversNothing
  */
 class DefaultCacheFactoryTest extends TestCase

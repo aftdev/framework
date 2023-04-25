@@ -7,6 +7,7 @@ use AftDev\Test\TestCase;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Db\Connection
  */
 class ConnectionTest extends TestCase

@@ -14,6 +14,7 @@ use Symfony\Component\Console\Application;
  * Class CommandManagerFactoryTest.
  *
  * @internal
+ *
  * @covers \AftDev\Console\Factory\ApplicationFactory
  */
 class ApplicationFactoryTest extends TestCase

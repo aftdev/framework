@@ -1,120 +1,121 @@
 {
-  "name": "aftdev/framework",
-  "description": "Repository for AftDev packages development.",
-  "license": "BSD-3-Clause",
-  "require": {
-    "php": "^8.1",
-    "illuminate/database": "^9.0",
-    "illuminate/support": "^9.0",
-    "laminas/laminas-servicemanager": "^3.12.0",
-    "laminas/laminas-stdlib": "^3.1",
-    "league/flysystem": "^3.0.0",
-    "monolog/monolog": "^3.1.0",
-    "psr/container": "^1.1 || ^2.0",
-    "psr/http-server-middleware": "^1.0",
-    "robmorgan/phinx": "^0.12.9",
-    "symfony/cache": "^6.0",
-    "symfony/console": "^6.0",
-    "symfony/messenger": "^6.0",
-    "symfony/property-access": "^6.0",
-    "symfony/property-info": "^6.0",
-    "symfony/serializer": "^6.0"
-  },
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.3.2",
-    "laminas/laminas-config-aggregator": "^1.1",
-    "league/flysystem-aws-s3-v3": "^3.0",
-    "league/flysystem-ftp": "^3.0",
-    "league/flysystem-memory": "^3.0",
-    "nesbot/carbon": "^2.9.1",
-    "phpspec/prophecy-phpunit": "^2.0",
-    "phpunit/phpunit": "^9.0",
-    "symfony/redis-messenger": "^6.0",
-    "symfony/var-dumper": "^6.0",
-    "symplify/monorepo-builder": "^9.4"
-  },
-  "autoload": {
-    "classmap": [
-      "packages/cache/src/",
-      "packages/console/src/",
-      "packages/db-eloquent/src/",
-      "packages/db/src/",
-      "packages/filesystem/src/",
-      "packages/log/src/",
-      "packages/messenger/src/",
-      "packages/service-manager/src/"
-    ],
-    "psr-4": {
-      "AftDev\\Cache\\": "packages/cache/src/",
-      "AftDev\\Console\\": "packages/console/src/",
-      "AftDev\\DbEloquent\\": "packages/db-eloquent/src/",
-      "AftDev\\Db\\": "packages/db/src/",
-      "AftDev\\Filesystem\\": "packages/filesystem/src/",
-      "AftDev\\Log\\": "packages/log/src/",
-      "AftDev\\Messenger\\": "packages/messenger/src/",
-      "AftDev\\ServiceManager\\": "packages/service-manager/src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "AftDevTest\\Cache\\": "packages/cache/tests/",
-      "AftDevTest\\Console\\": "packages/console/tests/",
-      "AftDevTest\\DbEloquent\\": "packages/db-eloquent/tests/",
-      "AftDevTest\\Db\\": "packages/db/tests/",
-      "AftDevTest\\Filesystem\\": "packages/filesystem/tests/",
-      "AftDevTest\\Log\\": "packages/log/tests/",
-      "AftDevTest\\Messenger\\": "packages/messenger/tests/",
-      "AftDevTest\\ServiceManager\\": "packages/service-manager/tests/",
-      "AftDev\\Test\\": "tests/"
-    }
-  },
-  "replace": {
-    "aftdev/cache-manager": "1.0.0",
-    "aftdev/console-manager": "1.0.0",
-    "aftdev/db-eloquent": "1.0.0",
-    "aftdev/db-manager": "1.0.0",
-    "aftdev/filesystem-manager": "1.0.0",
-    "aftdev/log-manager": "1.0.0",
-    "aftdev/messenger": "1.0.0",
-    "aftdev/service-manager": "1.0.0"
-  },
-  "scripts": {
-    "monorepo": "monorepo-builder",
-    "repo-merge": "monorepo-builder merge --ansi",
-    "repo-validate": "monorepo-builder validate --ansi",
-    "test": "phpunit --no-coverage --order-by=random",
-    "test:unit": "@test --testsuite UnitTests",
-    "test:feature": "@test --testsuite Features",
-    "coverage": "@php -dpcov.enabled=1 ./vendor/bin/phpunit",
-    "coverage:show": "@coverage --coverage-text",
-    "coverage:html": "@coverage --coverage-html=coverage",
-    "lint": "php-cs-fixer fix -v --ansi",
-    "lint:test": "@lint --dry-run",
-    "check": [
-      "@lint:test",
-      "@test"
-    ]
-  },
-  "extra": {
-    "laminas": {
-      "config-provider": [
-        "AftDev\\ServiceManager\\ConfigProvider",
-        "AftDev\\DbEloquent\\ConfigProvider",
-        "AftDev\\Db\\ConfigProvider",
-        "AftDev\\Filesystem\\ConfigProvider",
-        "AftDev\\Cache\\ConfigProvider",
-        "AftDev\\Console\\ConfigProvider",
-        "AftDev\\Messenger\\ConfigProvider",
-        "AftDev\\Log\\ConfigProvider"
-      ]
-    }
-  },
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {
-      "composer/package-versions-deprecated": true
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "name": "aftdev/framework",
+    "description": "Repository for AftDev packages development.",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": "^8.1",
+        "illuminate/database": "^9.0 || ^10.0",
+        "illuminate/support": "^9.0 || ^10.0",
+        "laminas/laminas-servicemanager": "^3.12.0",
+        "laminas/laminas-stdlib": "^3.1",
+        "league/flysystem": "^3.0.0",
+        "monolog/monolog": "^3.1.0",
+        "ocramius/package-versions": "^2.5.1",
+        "psr/container": "^1.1 || ^2.0",
+        "psr/http-server-middleware": "^1.0",
+        "robmorgan/phinx": "^0.12.9",
+        "symfony/cache": "^6.0",
+        "symfony/console": "^6.0",
+        "symfony/messenger": "^6.0",
+        "symfony/property-access": "^6.0",
+        "symfony/property-info": "^6.0",
+        "symfony/serializer": "^6.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.3.2",
+        "laminas/laminas-config-aggregator": "^1.1",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "league/flysystem-ftp": "^3.0",
+        "league/flysystem-memory": "^3.0",
+        "nesbot/carbon": "^2.9.1",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.0",
+        "symfony/redis-messenger": "^6.0",
+        "symfony/var-dumper": "^6.0",
+        "symplify/monorepo-builder": "^11.2"
+    },
+    "autoload": {
+        "classmap": [
+            "packages/cache/src/",
+            "packages/console/src/",
+            "packages/db-eloquent/src/",
+            "packages/db/src/",
+            "packages/filesystem/src/",
+            "packages/log/src/",
+            "packages/messenger/src/",
+            "packages/service-manager/src/"
+        ],
+        "psr-4": {
+            "AftDev\\Cache\\": "packages/cache/src/",
+            "AftDev\\Console\\": "packages/console/src/",
+            "AftDev\\DbEloquent\\": "packages/db-eloquent/src/",
+            "AftDev\\Db\\": "packages/db/src/",
+            "AftDev\\Filesystem\\": "packages/filesystem/src/",
+            "AftDev\\Log\\": "packages/log/src/",
+            "AftDev\\Messenger\\": "packages/messenger/src/",
+            "AftDev\\ServiceManager\\": "packages/service-manager/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AftDevTest\\Cache\\": "packages/cache/tests/",
+            "AftDevTest\\Console\\": "packages/console/tests/",
+            "AftDevTest\\DbEloquent\\": "packages/db-eloquent/tests/",
+            "AftDevTest\\Db\\": "packages/db/tests/",
+            "AftDevTest\\Filesystem\\": "packages/filesystem/tests/",
+            "AftDevTest\\Log\\": "packages/log/tests/",
+            "AftDevTest\\Messenger\\": "packages/messenger/tests/",
+            "AftDevTest\\ServiceManager\\": "packages/service-manager/tests/",
+            "AftDev\\Test\\": "tests/"
+        }
+    },
+    "replace": {
+        "aftdev/cache-manager": "1.0.0",
+        "aftdev/console-manager": "1.0.0",
+        "aftdev/db-eloquent": "1.0.0",
+        "aftdev/db-manager": "1.0.0",
+        "aftdev/filesystem-manager": "1.0.0",
+        "aftdev/log-manager": "1.0.0",
+        "aftdev/messenger": "1.0.0",
+        "aftdev/service-manager": "1.0.0"
+    },
+    "scripts": {
+        "monorepo": "monorepo-builder",
+        "repo-merge": "monorepo-builder merge --ansi",
+        "repo-validate": "monorepo-builder validate --ansi",
+        "test": "phpunit --no-coverage --order-by=random",
+        "test:unit": "@test --testsuite UnitTests",
+        "test:feature": "@test --testsuite Features",
+        "coverage": "@php -dpcov.enabled=1 ./vendor/bin/phpunit",
+        "coverage:show": "@coverage --coverage-text",
+        "coverage:html": "@coverage --coverage-html=coverage",
+        "lint": "php-cs-fixer fix -v --ansi",
+        "lint:test": "@lint --dry-run",
+        "check": [
+            "@lint:test",
+            "@test"
+        ]
+    },
+    "extra": {
+        "laminas": {
+            "config-provider": [
+                "AftDev\\Cache\\ConfigProvider",
+                "AftDev\\Console\\ConfigProvider",
+                "AftDev\\Db\\ConfigProvider",
+                "AftDev\\DbEloquent\\ConfigProvider",
+                "AftDev\\Filesystem\\ConfigProvider",
+                "AftDev\\Log\\ConfigProvider",
+                "AftDev\\Messenger\\ConfigProvider",
+                "AftDev\\ServiceManager\\ConfigProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

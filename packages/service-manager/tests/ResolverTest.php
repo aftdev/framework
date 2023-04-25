@@ -11,6 +11,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\Resolver
  */
 class ResolverTest extends TestCase

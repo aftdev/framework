@@ -9,6 +9,7 @@ use AftDev\Test\Model\TestModel;
 
 /**
  * @internal
+ *
  * @covers \AftDev\DbEloquent\ConfigProvider
  * @covers \AftDev\DbEloquent\Serializer\ModelNormalizer
  */

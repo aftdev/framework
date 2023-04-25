@@ -10,6 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\AbstractManager
  */
 class ManagerTest extends TestCase

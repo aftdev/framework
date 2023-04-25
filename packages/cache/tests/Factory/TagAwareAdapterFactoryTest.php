@@ -11,6 +11,7 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Cache\Factory\TagAwareAdapterFactory
  */
 class TagAwareAdapterFactoryTest extends TestCase

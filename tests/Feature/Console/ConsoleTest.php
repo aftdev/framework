@@ -10,6 +10,7 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Console\Application
  */
 class ConsoleTest extends FeatureTestCase

@@ -12,6 +12,7 @@ use Symfony\Component\Cache\Adapter\ChainAdapter;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Cache\CacheManager
  */
 class CacheManagerTest extends TestCase

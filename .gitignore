@@ -11,3 +11,4 @@ coverage/
 config/*.develop
 tests/data/log
 .env
+docker-compose.override.yml

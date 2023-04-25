@@ -12,6 +12,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Log\LoggerManager
  */
 class LogManagerTest extends TestCase

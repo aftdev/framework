@@ -15,6 +15,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @internal
+ *
  * @coversNothing
  */
 class CacheAdapterTest extends FeatureTestCase
