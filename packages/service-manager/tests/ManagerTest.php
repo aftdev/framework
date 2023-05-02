@@ -27,15 +27,18 @@ class ManagerTest extends TestCase
     {
         $this->container = new ServiceManager([]);
 
-        $this->serviceFactory = new class {
+        $this->serviceFactory = new class() {
             private array $expectations = [];
+
             public function __invoke(...$params)
             {
                 $key = array_search($params, $this->expectations);
+
                 return (object) ['name' => $key];
             }
 
-            public function setExpectations($args) {
+            public function setExpectations($args)
+            {
                 $this->expectations = $args;
             }
         };
@@ -95,9 +98,8 @@ class ManagerTest extends TestCase
             'C' => [$this->container, 'short_notation', ['option_1' => 'Option 3', 'default_option' => 'test_default']],
             'D' => [$this->container, 'short_notation_no_options', ['option_1' => 'option 1 default', 'default_option' => 'test_default']],
             'E' => [$this->container, 'factory_service_not_used_by_plugins', null],
-            'F' => [$this->container, 'factory_service_not_used_by_plugins', ['with' => 'options']]
-            ])
-        ;
+            'F' => [$this->container, 'factory_service_not_used_by_plugins', ['with' => 'options']],
+        ]);
 
         $test = $this->manager->get('adapter_1');
         $this->assertSame('A', $test->name);
@@ -128,12 +130,10 @@ class ManagerTest extends TestCase
 
     public function testDefaultPlugin()
     {
-
         $this->serviceFactory->setExpectations([
             'defaultB' => [$this->container, 'service_via_factory_b', ['option_1' => 'Option 2', 'default_option' => 'test_default']],
-            'defaultA' => [$this->container, 'service_via_factory_a', ['option_1' => 'Option 1', 'default_option' => 'test_default']]
-            ])
-        ;
+            'defaultA' => [$this->container, 'service_via_factory_a', ['option_1' => 'Option 1', 'default_option' => 'test_default']],
+        ]);
 
         $default = $this->manager->getDefault();
         $this->assertSame('defaultB', $default->name);

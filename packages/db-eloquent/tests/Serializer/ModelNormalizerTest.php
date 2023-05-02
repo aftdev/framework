@@ -35,7 +35,7 @@ class ModelNormalizerTest extends TestCase
         $normalizer->denormalize($data, 'type');
     }
 
-    static public function denormalizerErrorProvider()
+    public static function denormalizerErrorProvider()
     {
         return [
             'array missing model' => [

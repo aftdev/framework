@@ -29,7 +29,7 @@ final class DisksTest extends FeatureTestCase
         $this->assertStringContainsString('testFile', $disk->read('test.txt'));
     }
 
-    static public function diskProvider(): array
+    public static function diskProvider(): array
     {
         return [
             'local' => ['local'],
