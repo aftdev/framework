@@ -77,7 +77,7 @@ class CacheAdapterTest extends FeatureTestCase
         $cache->delete($key);
     }
 
-    public function adapterProviders()
+    static public function adapterProviders()
     {
         return [
             'default' => [

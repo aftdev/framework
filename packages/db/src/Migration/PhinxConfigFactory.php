@@ -29,7 +29,7 @@ class PhinxConfigFactory
             ],
             'environments' => [
                 'default_migration_table' => 'migrations',
-                'default_database' => 'default',
+                'default_environment' => 'default',
             ],
         ];
 
@@ -46,7 +46,7 @@ class PhinxConfigFactory
         }
 
         reset($configArray);
-        $configArray['environments']['default_database'] = $default ?? key($configArray['environments']);
+        $configArray['environments']['default_environment'] = $default ?? key($configArray['environments']);
 
         return $configArray;
     }

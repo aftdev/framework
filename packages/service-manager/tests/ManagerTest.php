@@ -6,7 +6,7 @@ use AftDev\ServiceManager\AbstractManager;
 use AftDev\Test\TestCase;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceManager;
-use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @internal
@@ -15,29 +15,30 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ManagerTest extends TestCase
 {
-    /**
-     * @var ServiceManager
-     */
-    protected $container;
+    use ProphecyTrait;
 
-    /**
-     * @var AbstractManager
-     */
-    protected $manager;
+    protected ServiceManager $container;
 
-    /**
-     * @var MockObject
-     */
+    protected AbstractManager $manager;
+
     protected $serviceFactory;
 
     public function setUp(): void
     {
         $this->container = new ServiceManager([]);
 
-        $this->serviceFactory = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['__invoke'])
-            ->getMock()
-        ;
+        $this->serviceFactory = new class {
+            private array $expectations = [];
+            public function __invoke(...$params)
+            {
+                $key = array_search($params, $this->expectations);
+                return (object) ['name' => $key];
+            }
+
+            public function setExpectations($args) {
+                $this->expectations = $args;
+            }
+        };
 
         $pluginManagerConfig = [
             'default' => 'adapter_2',
@@ -88,24 +89,14 @@ class ManagerTest extends TestCase
      */
     public function testManager()
     {
-        $this->serviceFactory->expects($this->exactly(6))
-            ->method('__invoke')
-            ->withConsecutive(
-                [$this->container, 'service_via_factory_a', ['option_1' => 'Option 1', 'default_option' => 'test_default']],
-                [$this->container, 'service_via_factory_b', ['option_1' => 'Option 2', 'default_option' => 'test_default']],
-                [$this->container, 'short_notation', ['option_1' => 'Option 3', 'default_option' => 'test_default']],
-                [$this->container, 'short_notation_no_options', ['option_1' => 'option 1 default', 'default_option' => 'test_default']],
-                [$this->container, 'factory_service_not_used_by_plugins'],
-                [$this->container, 'factory_service_not_used_by_plugins', ['with' => 'options']]
-            )
-            ->willReturnOnConsecutiveCalls(
-                (object) ['name' => 'A'],
-                (object) ['name' => 'B'],
-                (object) ['name' => 'C'],
-                (object) ['name' => 'D'],
-                (object) ['name' => 'E'],
-                (object) ['name' => 'F']
-            )
+        $this->serviceFactory->setExpectations([
+            'A' => [$this->container, 'service_via_factory_a', ['option_1' => 'Option 1', 'default_option' => 'test_default']],
+            'B' => [$this->container, 'service_via_factory_b', ['option_1' => 'Option 2', 'default_option' => 'test_default']],
+            'C' => [$this->container, 'short_notation', ['option_1' => 'Option 3', 'default_option' => 'test_default']],
+            'D' => [$this->container, 'short_notation_no_options', ['option_1' => 'option 1 default', 'default_option' => 'test_default']],
+            'E' => [$this->container, 'factory_service_not_used_by_plugins', null],
+            'F' => [$this->container, 'factory_service_not_used_by_plugins', ['with' => 'options']]
+            ])
         ;
 
         $test = $this->manager->get('adapter_1');
@@ -137,22 +128,20 @@ class ManagerTest extends TestCase
 
     public function testDefaultPlugin()
     {
-        $this->serviceFactory->expects($this->exactly(2))
-            ->method('__invoke')
-            ->withConsecutive(
-                [$this->container, 'service_via_factory_b', ['option_1' => 'Option 2', 'default_option' => 'test_default']],
-                [$this->container, 'service_via_factory_a', ['option_1' => 'Option 1', 'default_option' => 'test_default']]
-            )
-            ->willReturnOnConsecutiveCalls('defaultB', 'defaultA')
+
+        $this->serviceFactory->setExpectations([
+            'defaultB' => [$this->container, 'service_via_factory_b', ['option_1' => 'Option 2', 'default_option' => 'test_default']],
+            'defaultA' => [$this->container, 'service_via_factory_a', ['option_1' => 'Option 1', 'default_option' => 'test_default']]
+            ])
         ;
 
         $default = $this->manager->getDefault();
-        $this->assertSame('defaultB', $default);
+        $this->assertSame('defaultB', $default->name);
 
         $this->manager->setDefault('adapter_1');
 
         $default = $this->manager->getDefault();
-        $this->assertSame('defaultA', $default);
+        $this->assertSame('defaultA', $default->name);
 
         // Test unknown default.
         $this->expectException(ServiceNotFoundException::class);

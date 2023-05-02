@@ -34,7 +34,7 @@ class MemcachedAdapterFactoryTest extends TestCase
      *
      * @return array
      */
-    public function optionProviders()
+    static public function optionProviders()
     {
         return [
             'using servers' => [

@@ -31,7 +31,7 @@ class RuleBuilderTest extends TestCase
         $ruleBuilder->needs($type)->give($value);
     }
 
-    public function ruleDataProvider()
+    static public function ruleDataProvider()
     {
         return [
             'string' => ['string', 'string'],
