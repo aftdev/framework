@@ -4,7 +4,7 @@ node_modules
 composer.phar
 clover.xml
 phpunit.xml
-.phpunit.result.cache
+.phpunit.cache
 vendor/
 .php-cs-fixer.cache
 coverage/
