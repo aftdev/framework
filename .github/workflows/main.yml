@@ -70,7 +70,7 @@ jobs:
           docker cp ./env/mysql/init.sql mysql:/home/init.sql
           docker exec mysql sh -c \
             'mysql -u ${{ env.TEST_DB_USERNAME }} -p${{ env.TEST_DB_PASSWORD }} < ./home/init.sql'
-          docker cp ./env/aws/init.sh localstack:/home/init.sh
+          docker cp ./env/aws/ready.d/init.sh localstack:/home/init.sh
           docker exec localstack sh -c \
             'chmod +x /home/init.sh && /home/init.sh'
 
