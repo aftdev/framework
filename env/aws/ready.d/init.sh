@@ -1,5 +1,7 @@
 #!/bin/bash
 set -x
+
+awslocal s3api create-bucket --bucket default
 awslocal s3 mb s3://default
 
 # Create dummy file

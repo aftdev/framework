@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Filesystem\Factory\S3AdapterFactory
  */
 class S3AdapterFactoryTest extends TestCase

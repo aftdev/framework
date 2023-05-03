@@ -17,6 +17,7 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Messenger\Factory\MessageBusFactory
  * @covers \AftDev\Messenger\Factory\MessengerFactory
  * @covers \AftDev\Messenger\Handler\MessageHandler

@@ -8,6 +8,7 @@ use AftDev\Test\Model\TestModel;
 
 /**
  * @internal
+ *
  * @covers \AftDev\DbEloquent\Capsule\CapsuleManager
  */
 class DbEloquentTest extends FeatureTestCase

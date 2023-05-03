@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Cache\Factory\ChainAdapterFactory
  */
 class ChainAdapterFactoryTest extends TestCase

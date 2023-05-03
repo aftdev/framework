@@ -96,8 +96,10 @@ abstract class AbstractManager extends LaminasPluginManager
 
     /**
      * Return true if the manager can create the service.
+     *
+     * @param mixed $name
      */
-    public function has(string $name): bool
+    public function has($name)
     {
         return parent::has($name) || $this->hasPlugin($name);
     }
@@ -115,12 +117,12 @@ abstract class AbstractManager extends LaminasPluginManager
      *
      * Configuration option will be fetched from the plugins options.
      *
+     * @return mixed
+     *
      * @throws ServiceManagerException\ServiceNotFoundException if the manager does not have a service definition for
      *  the instance, and the service is not auto-invokable.
      * @throws ServiceManagerException\InvalidServiceException if the plugin created is invalid
      *  for the plugin context.
-     *
-     * @return mixed
      */
     public function getPlugin(string $name)
     {
@@ -150,13 +152,13 @@ abstract class AbstractManager extends LaminasPluginManager
     /**
      * Return default.
      *
+     * @return mixed
+     *
      * @throws ServiceManagerException\ServiceNotFoundException if the manager does not have
      *     a service definition for the instance, and the service is not
      *     auto-invokable.
      * @throws ServiceManagerException\InvalidServiceException if the plugin created is invalid for the
      *     plugin context.
-     *
-     * @return mixed
      */
     public function getDefault()
     {

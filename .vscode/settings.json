@@ -1,0 +1,4 @@
+{
+  "php.validate.executablePath": "./env/php/vscode-php",
+  "php.debug.executablePath": "./env/php/vscode-php",
+}

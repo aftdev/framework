@@ -10,6 +10,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Filesystem\Factory\FileManagerFactory
  */
 class FileManagerFactoryTest extends TestCase

@@ -18,6 +18,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Log\Factory\ChannelAbstractFactory
  */
 class ChannelAbstractFactoryTest extends TestCase

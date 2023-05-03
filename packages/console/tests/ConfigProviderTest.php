@@ -9,6 +9,7 @@ use AftDev\Test\TestCase;
  * Class ConfigProviderTest.
  *
  * @internal
+ *
  * @covers \AftDev\Console\ConfigProvider
  */
 class ConfigProviderTest extends TestCase

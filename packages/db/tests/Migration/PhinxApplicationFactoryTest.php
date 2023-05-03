@@ -11,6 +11,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Db\Migration\PhinxApplicationFactory
  */
 class PhinxApplicationFactoryTest extends TestCase

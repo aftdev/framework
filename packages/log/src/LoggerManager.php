@@ -44,8 +44,8 @@ class LoggerManager extends AbstractManager
     /**
      * Shortcuts to the default logger functions.
      *
-     * @param $name
-     * @param $args
+     * @param mixed $name
+     * @param mixed $args
      *
      * @return false|LoggerInterface
      */

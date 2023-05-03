@@ -7,6 +7,7 @@ use AftDev\Test\TestCase;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Cache\Factory\RedisAdapterFactory
  */
 class RedisAdapterFactoryTest extends TestCase
@@ -33,7 +34,7 @@ class RedisAdapterFactoryTest extends TestCase
      *
      * @return array
      */
-    public function optionProviders()
+    public static function optionProviders()
     {
         return [
             'using servers' => [

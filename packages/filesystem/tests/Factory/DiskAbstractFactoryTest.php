@@ -13,6 +13,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Filesystem\Factory\DiskAbstractFactory
  * @covers \AftDev\Filesystem\Factory\GetConfigTrait
  */

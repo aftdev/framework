@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
  * Class CommandManagerFactoryTest.
  *
  * @internal
+ *
  * @covers \AftDev\Console\Factory\CommandManagerFactory
  */
 class CommandManagerFactoryTest extends TestCase

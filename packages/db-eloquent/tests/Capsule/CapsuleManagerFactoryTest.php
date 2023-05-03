@@ -11,6 +11,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\DbEloquent\Capsule\CapsuleManagerFactory
  */
 class CapsuleManagerFactoryTest extends TestCase

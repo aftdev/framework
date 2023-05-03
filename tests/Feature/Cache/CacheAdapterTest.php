@@ -15,6 +15,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @internal
+ *
  * @coversNothing
  */
 class CacheAdapterTest extends FeatureTestCase
@@ -76,7 +77,7 @@ class CacheAdapterTest extends FeatureTestCase
         $cache->delete($key);
     }
 
-    public function adapterProviders()
+    public static function adapterProviders()
     {
         return [
             'default' => [

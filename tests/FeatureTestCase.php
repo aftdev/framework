@@ -9,6 +9,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @internal
+ *
  * @coversNothing
  */
 class FeatureTestCase extends TestCase

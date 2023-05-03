@@ -4,11 +4,6 @@ namespace AftDev\ServiceManager;
 
 use AftDev\ServiceManager\Resolver\RuleBuilder;
 use Psr\Container\ContainerInterface;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionFunction;
-use ReflectionMethod;
-use ReflectionParameter;
 
 class Resolver
 {
@@ -35,11 +30,11 @@ class Resolver
     /**
      * Create a class with all dependencies automatically injected.
      *
-     * @throws ReflectionException If a parameter cannot be resolved.
+     * @throws \ReflectionException If a parameter cannot be resolved.
      */
     public function resolveClass(string $requestedName, array $parameters = []): object
     {
-        $reflectionClass = new ReflectionClass($requestedName);
+        $reflectionClass = new \ReflectionClass($requestedName);
 
         if (null === ($constructor = $reflectionClass->getConstructor())) {
             return new $requestedName();
@@ -51,7 +46,7 @@ class Resolver
             return new $requestedName();
         }
 
-        $constructorParameters = array_map(function (ReflectionParameter $parameter) use ($requestedName, $parameters) {
+        $constructorParameters = array_map(function (\ReflectionParameter $parameter) use ($requestedName, $parameters) {
             $parameterName = $parameter->getName();
             if (array_key_exists($parameterName, $parameters)) {
                 return $this->getParameterValue($parameters[$parameterName]);
@@ -69,16 +64,16 @@ class Resolver
      * @param array|callable|string $function - The function name or an array class,function name.
      * @param array $parameters - List of Hard coded values.
      *
-     * @throws ReflectionException If a parameter cannot be resolved.
+     * @throws \ReflectionException If a parameter cannot be resolved.
      */
     public function call($function, array $parameters = [])
     {
         // Check if callable
         if (is_callable($function)) {
             if (is_array($function)) {
-                $reflection = new ReflectionMethod(...$function);
+                $reflection = new \ReflectionMethod(...$function);
             } else {
-                $reflection = new ReflectionFunction($function);
+                $reflection = new \ReflectionFunction($function);
             }
         } else {
             $exploded = explode('@', $function);
@@ -86,13 +81,13 @@ class Resolver
             $className = $exploded[0];
             $functionName = $exploded[1] ?? '__invoke';
 
-            $reflection = new ReflectionMethod($className, $functionName);
+            $reflection = new \ReflectionMethod($className, $functionName);
             $function = [$this->resolveClass($className, $parameters), $functionName];
         }
 
         $reflectionParameters = $reflection->getParameters();
 
-        $parameters = array_map(function (ReflectionParameter $parameter) use ($parameters) {
+        $parameters = array_map(function (\ReflectionParameter $parameter) use ($parameters) {
             $parameterName = $parameter->getName();
             if (array_key_exists($parameterName, $parameters)) {
                 return $this->getParameterValue($parameters[$parameterName]);
@@ -125,11 +120,11 @@ class Resolver
     /**
      * Get value for a service parameter.
      *
-     * @throws ReflectionException If parameter cannot be resolved.
-     *
      * @return mixed
+     *
+     * @throws \ReflectionException If parameter cannot be resolved.
      */
-    protected function getServiceParameter(string $serviceName, ReflectionParameter $parameter)
+    protected function getServiceParameter(string $serviceName, \ReflectionParameter $parameter)
     {
         $parameterName = $parameter->getName();
         if (isset($this->rules[$serviceName]) && array_key_exists($parameterName, $this->rules[$serviceName])) {
@@ -145,9 +140,9 @@ class Resolver
     }
 
     /**
-     * @throws ReflectionException If parameter cannot be resolved.
+     * @throws \ReflectionException If parameter cannot be resolved.
      */
-    protected function resolveParameter(ReflectionParameter $parameter)
+    protected function resolveParameter(\ReflectionParameter $parameter)
     {
         $parameterName = $parameter->getName();
 
@@ -161,8 +156,8 @@ class Resolver
         try {
             // Finally check for default value.
             return $parameter->getDefaultValue();
-        } catch (ReflectionException $e) {
-            throw new ReflectionException(
+        } catch (\ReflectionException $e) {
+            throw new \ReflectionException(
                 sprintf(
                     'Unable to resolve parameter "%s"',
                     $parameterName

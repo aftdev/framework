@@ -8,6 +8,7 @@ use Illuminate\Database\ConnectionInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\DbEloquent\Factory\DefaultConnectionFactory
  */
 class DefaultConnectionTest extends FeatureTestCase

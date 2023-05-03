@@ -7,6 +7,7 @@ use AftDev\Test\FeatureTestCase;
 
 /**
  * @internal
+ *
  * @covers \AftDev\DbEloquent\Capsule\CapsuleManager
  */
 class DbBuilderTest extends FeatureTestCase

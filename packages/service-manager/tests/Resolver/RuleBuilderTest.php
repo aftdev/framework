@@ -8,6 +8,7 @@ use AftDev\Test\TestCase;
 
 /**
  * @internal
+ *
  * @covers \AftDev\ServiceManager\Resolver\RuleBuilder
  */
 class RuleBuilderTest extends TestCase
@@ -30,7 +31,7 @@ class RuleBuilderTest extends TestCase
         $ruleBuilder->needs($type)->give($value);
     }
 
-    public function ruleDataProvider()
+    public static function ruleDataProvider()
     {
         return [
             'string' => ['string', 'string'],

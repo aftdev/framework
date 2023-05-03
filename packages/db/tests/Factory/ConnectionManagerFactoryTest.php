@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Db\Factory\ConnectionManagerFactory
  */
 class ConnectionManagerFactoryTest extends TestCase

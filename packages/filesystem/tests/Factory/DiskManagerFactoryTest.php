@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @internal
+ *
  * @covers \AftDev\Filesystem\Factory\DiskManagerFactory
  */
 class DiskManagerFactoryTest extends TestCase
