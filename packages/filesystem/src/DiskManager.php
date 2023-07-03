@@ -52,9 +52,6 @@ class DiskManager extends AbstractManager
         return $this->cloudDisk ? $this->disk($this->cloudDisk) : $this->disk();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $config)
     {
         parent::configure($config);

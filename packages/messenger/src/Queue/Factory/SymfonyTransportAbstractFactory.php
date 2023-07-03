@@ -51,9 +51,6 @@ class SymfonyTransportAbstractFactory implements AbstractFactoryInterface
         return $factory->createTransport($dsn, $options, $serializer);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
         // Always return true - we will use the options or name above to check if we can handle it.

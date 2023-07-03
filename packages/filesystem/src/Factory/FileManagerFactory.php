@@ -9,9 +9,6 @@ use Psr\Container\ContainerInterface;
 
 class FileManagerFactory implements FactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         $diskManager = $container->get(DiskManager::class);

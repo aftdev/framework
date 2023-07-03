@@ -5,6 +5,7 @@ namespace AftDev\ServiceManager;
 use AftDev\ServiceManager\Resolver\RuleBuilder;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
+use ReflectionMethod;
 use ReflectionParameter;
 
 class Resolver
@@ -118,8 +119,7 @@ class Resolver
 
         $types = $type
             ? ($type instanceof (\ReflectionUnionType::class) ? $type->getTypes() : [$type])
-            : []
-        ;
+            : [];
 
         foreach ($types as $type) {
             if ($type->isBuiltin()) {

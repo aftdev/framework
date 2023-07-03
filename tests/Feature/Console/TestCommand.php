@@ -12,9 +12,6 @@ class TestCommand extends SymfonyCommand
 {
     protected static $defaultName = 'test:command';
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Test Command Output');

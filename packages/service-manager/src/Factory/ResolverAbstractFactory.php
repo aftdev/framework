@@ -29,8 +29,6 @@ class ResolverAbstractFactory implements AbstractFactoryInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return bool
      */
     public function canCreate(ContainerInterface $container, $requestedName)

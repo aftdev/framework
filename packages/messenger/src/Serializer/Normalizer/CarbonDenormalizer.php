@@ -15,8 +15,6 @@ class CarbonDenormalizer implements DenormalizerInterface, CacheableSupportsMeth
     ];
 
     /**
-     * {@inheritdoc}
-     *
      * @throws NotNormalizableValueException
      */
     public function denormalize($data, string $type, string $format = null, array $context = [])
@@ -28,17 +26,11 @@ class CarbonDenormalizer implements DenormalizerInterface, CacheableSupportsMeth
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsDenormalization($data, string $type, string $format = null)
     {
         return isset(self::$supportedTypes[$type]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCacheableSupportsMethod(): bool
     {
         return __CLASS__ === static::class;

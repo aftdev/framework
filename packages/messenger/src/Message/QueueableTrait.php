@@ -9,9 +9,6 @@ trait QueueableTrait
      */
     protected $queues;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueues(): ?array
     {
         return null !== $this->queues
@@ -19,9 +16,6 @@ trait QueueableTrait
             : (array) ($this->queue ?? null);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onQueue(...$queues): QueueableInterface
     {
         $queues = is_array($queues[0]) ? $queues[0] : $queues;

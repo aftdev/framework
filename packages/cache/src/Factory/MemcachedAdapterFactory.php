@@ -8,9 +8,6 @@ use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 
 class MemcachedAdapterFactory extends ResolverAbstractFactory
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         [$servers, $memCachedOptions] = $this->getConnectionOptions($options);

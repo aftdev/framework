@@ -12,25 +12,16 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ModelNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function hasCacheableSupportsMethod(): bool
     {
         return __CLASS__ === static::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsNormalization($data, string $format = null)
     {
         return $data instanceof Model;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsDenormalization($data, string $type, string $format = null)
     {
         return is_a($type, Model::class, true);
@@ -62,8 +53,6 @@ class ModelNormalizer implements NormalizerInterface, DenormalizerInterface, Cac
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws InvalidArgumentException
      */
     public function normalize($object, string $format = null, array $context = [])

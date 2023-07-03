@@ -10,9 +10,6 @@ class Command extends SymfonyCommand
 {
     protected static $defaultName = 'testCommand';
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         return 0;
