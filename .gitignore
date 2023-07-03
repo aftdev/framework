@@ -1,6 +1,5 @@
 .idea
 .DS_Store
-node_modules
 composer.phar
 clover.xml
 phpunit.xml
@@ -12,3 +11,13 @@ config/*.develop
 tests/data/log
 .env
 docker-compose.override.yml
+
+# Yarn
+node_modules
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

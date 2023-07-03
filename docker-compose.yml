@@ -1,4 +1,4 @@
-version: "3.9"
+version: '3.9'
 
 services:
   # Php Image
@@ -10,7 +10,7 @@ services:
     stdin_open: true
     tty: true
     # Map local user to container user for file permissions.
-    user: "${UID:-1000}:${GID:-1000}"
+    user: '${UID:-1000}:${GID:-1000}'
     environment:
       PHP_VERSION: ${PHP_VERSION:-80}
     volumes:
@@ -23,7 +23,7 @@ services:
       MYSQL_DATABASE: 'db'
       MYSQL_ROOT_PASSWORD: 'root'
     volumes:
-      - "./env/mysql:/docker-entrypoint-initdb.d"
+      - './env/mysql:/docker-entrypoint-initdb.d'
     ports:
       - '${LOCALDEV_MYSQL_PORT:-3306}:3306'
   # AWS services

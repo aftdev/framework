@@ -4,9 +4,8 @@ Use Eloquent models without laravel !
 
 ## Configuration
 
-You need to register your connection details.
-To do so we use use `aftdev/db-manager` package
-Please follow the documentation of this package.
+You need to register your connection details. To do so we use use
+`aftdev/db-manager` package Please follow the documentation of this package.
 
 e.g
 
@@ -27,7 +26,7 @@ return [
 ];
 ```
 
-To configure extra settings supported by laravel but not by `aftdev/db-manager` 
+To configure extra settings supported by laravel but not by `aftdev/db-manager`
 we need to use the `extra` configuration
 
 e.g
@@ -71,10 +70,10 @@ https://laravel.com/docs/6.x/database
 Use the capsule manager to access laravel connections / table etc.
 
 ```php
-<?php 
+<?php
 
 class Test
-{ 
+{
     public function __construct(CapsuleManager $capsuleManager) {
         $users = $capsuleManager->getConnection('name')->select('select * from users where active = ?', [1]);
 
@@ -85,15 +84,16 @@ class Test
 
 ### Default Connection
 
-To directly use the default connection in your service simply use the `Illuminate\Database\ConnectionInterface` for your dependency.
+To directly use the default connection in your service simply use the
+`Illuminate\Database\ConnectionInterface` for your dependency.
 
 ```php
-<?php 
+<?php
 
 use Illuminate\Database\ConnectionInterface;
 
 class Test
-{ 
+{
     public function __construct(ConnectionInterface $connection) {
         $users = $connection->select('select * from users where active = ?', [1]);
 
@@ -106,11 +106,11 @@ class Test
 
 https://laravel.com/docs/7.x/eloquent
 
-To use Eloquent in your application you need to boot it.
-This can be done manually like so :
+To use Eloquent in your application you need to boot it. This can be done
+manually like so :
 
 ```php
-<?php 
+<?php
 use AftDev\Capsule\CapsuleManager;
 
 $capsuleManager = $container->get(CapsuleManager::class);
