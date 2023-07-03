@@ -7,6 +7,7 @@ use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionParameter;
+use ReflectionException;
 
 class Resolver
 {

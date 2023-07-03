@@ -25,7 +25,7 @@ final class FastRouterParamTranslatorTest extends TestCase
         $this->assertEquals($expected, $transformed);
     }
 
-    public function dataProvider()
+    static public function dataProvider()
     {
         return [
             'string' => [
