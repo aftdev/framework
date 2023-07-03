@@ -2,12 +2,10 @@
 
 namespace AftDevTest\ServiceManager;
 
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 use AftDev\ServiceManager\Resolver;
 use AftDev\Test\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Container\ContainerInterface;
+use Laminas\ServiceManager\ServiceManager;
 
 /**
  * @internal
@@ -16,63 +14,64 @@ use Psr\Container\ContainerInterface;
  */
 class ResolverTest extends TestCase
 {
-    use ProphecyTrait;
+    protected ServiceManager $container;
 
-    /**
-     * @var ObjectProphecy
-     */
-    protected $container;
-
-    /**
-     * @var Resolver
-     */
-    protected $resolver;
+    protected Resolver $resolver;
 
     public function setUp(): void
     {
-        $this->container = $this->prophesize(ContainerInterface::class);
+        $container = new \Laminas\ServiceManager\ServiceManager([
+            'services' => [
+                ExistingServiceB::class => new ExistingServiceB(),
+                ExistingServiceC::class => new ExistingServiceC(),
+            ],
+            'factories' => [
+                Resolver::class => Resolver\ResolverFactory::class,
+            ],
+            'abstract_factories' => [
+                ResolverAbstractFactory::class,
+            ],
+        ]);
 
-        $this->resolver = new Resolver($this->container->reveal());
+        $this->resolver = $container->get(Resolver::class);
+        $this->container = $container;
     }
 
     public function testResolveClass()
     {
-        $this->container->has(Argument::any())
-            ->will(function ($params) {
-                if (ExistingServiceB::class === $params[0]) {
-                    return true;
-                }
+        $this->resolver->when(TestService::class)->needs('optionsA')->give('options');
+        $this->resolver->when(TestService::class)->needs('optionsB')->give(['a', 'b']);
+        $this->resolver->when(TestService::class)->needs('optionsC')->give(1);
+        $this->resolver->when(TestService::class)->needs('optionCallable')->give(function () {
+            return 'fromCallable';
+        });
 
-                return false;
-            })
-        ;
+        $testClass = $this->resolver->resolveClass(TestService::class);
 
-        $serviceB = new ExistingServiceB();
-        $this->container
-            ->get(ExistingServiceB::class)
-            ->willReturn($serviceB)
-        ;
+        $this->assertSame($this->container->get(ExistingServiceB::class), $testClass->serviceB);
+        $this->assertSame('options', $testClass->optionsA);
+        $this->assertSame(['a', 'b'], $testClass->optionsB);
+        $this->assertSame(1, $testClass->optionsC);
+        $this->assertSame('fromCallable', $testClass->optionCallable);
 
-        $options = [
-            'optionsA' => 'A',
-            'optionsB' => ['a', 'b', 'c'],
-            'optionsC' => 1,
-            'optionsD' => 'mooh2',
-            'optionCallable' => function () {
-                return 'fromCallable';
-            },
-        ];
+        // Test type-hint Override.
+        $overrideServiceB = new ExistingServiceB();
+        $this->resolver->when(TestService::class)->needs(ExistingServiceB::class)->give($overrideServiceB);
 
-        $class = $this->resolver->resolveClass(TestService::class, $options);
+        $withOverride = $this->resolver->resolveClass(TestService::class);
+        $this->assertSame($overrideServiceB, $withOverride->serviceB);
+    }
 
-        $this->assertInstanceOf(TestService::class, $class);
+    public function testMultipleType()
+    {
+        $serviceB = $this->container->get(ExistingServiceB::class);
+        $this->resolver->when(TestServiceComplex::class)->needs('intOrArray')->give(1);
 
-        $this->assertSame($serviceB, $class->serviceB);
-        $this->assertSame($options['optionsA'], $class->optionsA);
-        $this->assertSame($options['optionsB'], $class->optionsB);
-        $this->assertSame($options['optionsC'], $class->optionsC);
-        $this->assertSame($options['optionsD'], $class->optionsD);
-        $this->assertSame('fromCallable', $class->optionCallable);
+        $testClass = $this->resolver->resolveClass(TestServiceComplex::class);
+
+        $this->assertSame($serviceB, $testClass->serviceB);
+        $this->assertSame(1, $testClass->intOrArray);
+        $this->assertSame($serviceB, $testClass->intOrExistingServiceB);
     }
 
     /**
@@ -80,23 +79,29 @@ class ResolverTest extends TestCase
      */
     public function testNoConstructorAndConstructorWithoutParams()
     {
-        $options = [];
-
-        $service = $this->resolver->resolveClass(ExistingServiceB::class, $options);
+        $service = $this->resolver->resolveClass(ExistingServiceB::class);
         $this->assertInstanceOf(ExistingServiceB::class, $service);
 
-        $serviceNoParams = $this->resolver->resolveClass(ExistingServiceC::class, $options);
+        $serviceNoParams = $this->resolver->resolveClass(ExistingServiceC::class);
         $this->assertInstanceOf(ExistingServiceC::class, $serviceNoParams);
     }
 
     public function testCallFunction()
     {
         $serviceC = new ExistingServiceC();
-        $this->container->has(ExistingServiceC::class)->willReturn(true);
-        $this->container
-            ->get(ExistingServiceC::class)
-            ->willReturn($serviceC)
-        ;
+        $container = new \Laminas\ServiceManager\ServiceManager([
+            'services' => [
+                ExistingServiceC::class => $serviceC,
+            ],
+            'factories' => [
+                Resolver::class => Resolver\ResolverFactory::class,
+            ],
+            'abstract_factories' => [
+                ResolverAbstractFactory::class,
+            ],
+        ]);
+
+        $this->resolver = $container->get(Resolver::class);
 
         $testClass = $this->resolver->resolveClass(ExistingServiceB::class);
 
@@ -137,30 +142,6 @@ class ResolverTest extends TestCase
         ], $returnValue3);
     }
 
-    public function testWhen()
-    {
-        $serviceB = new ExistingServiceB();
-        $serviceC = new ExistingServiceC();
-
-        $this->resolver->when(TestService::class)->needs('serviceB')->give($serviceB);
-        $this->resolver->when(TestService::class)->needs('optionsA')->give('options');
-        $this->resolver->when(TestService::class)->needs('optionsB')->give(['a', 'b']);
-        $this->resolver->when(TestService::class)->needs('optionsC')->give(1);
-        $this->resolver->when(TestService::class)->needs('optionCallable')->give(function () {
-            return 'callable';
-        });
-
-        $this->resolver->when(ExistingServiceB::class)->needs('serviceC')->give($serviceC);
-
-        $testClass = $this->resolver->resolveClass(TestService::class);
-
-        $this->assertSame($serviceB, $testClass->serviceB);
-        $this->assertSame('options', $testClass->optionsA);
-        $this->assertSame(['a', 'b'], $testClass->optionsB);
-        $this->assertSame(1, $testClass->optionsC);
-        $this->assertSame('callable', $testClass->optionCallable);
-    }
-
     /**
      * Test that the resolver will throw an exception.
      */
@@ -169,31 +150,34 @@ class ResolverTest extends TestCase
         $this->expectException(\ReflectionException::class);
         $this->resolver->resolveClass(NotAutodiscoverable::class);
     }
+
+    public function testNoType()
+    {
+        $this->expectException(\ReflectionException::class);
+        $this->resolver->resolveClass(NoType::class);
+    }
 }
 
 class TestService
 {
-    public $serviceB;
-    public $optionsA;
-    public $optionsB;
-    public $optionsC;
-    public $optionsD;
-    public $optionCallable;
-
     public function __construct(
-        ExistingServiceB $serviceB,
-        string $optionsA,
-        array $optionsB,
-        int $optionsC,
-        string $optionsD = 'mooh',
-        $optionCallable = null
+        public ExistingServiceB $serviceB,
+        public string $optionsA,
+        public array $optionsB,
+        public int $optionsC,
+        public string $optionsD = 'mooh',
+        public $optionCallable = null
     ) {
-        $this->serviceB = $serviceB;
-        $this->optionsA = $optionsA;
-        $this->optionsB = $optionsB;
-        $this->optionsC = $optionsC;
-        $this->optionsD = $optionsD;
-        $this->optionCallable = $optionCallable;
+    }
+}
+
+class TestServiceComplex
+{
+    public function __construct(
+        public ExistingServiceB $serviceB,
+        public int|array $intOrArray,
+        public int|ExistingServiceB $intOrExistingServiceB,
+    ) {
     }
 }
 
@@ -226,6 +210,13 @@ class ExistingServiceC
 class NotAutodiscoverable
 {
     public function __construct(array $test)
+    {
+    }
+}
+
+class NoType
+{
+    public function __construct($test)
     {
     }
 }

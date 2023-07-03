@@ -10,7 +10,6 @@ use AftDev\Messenger\Messenger;
 use AftDev\Messenger\Queue\QueueManager;
 use AftDev\Test\Feature\Messenger\Messages\TestQueuableCommand;
 use AftDev\Test\FeatureTestCase;
-use Illuminate\Support\Arr;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
@@ -43,10 +42,8 @@ class MessengerTest extends FeatureTestCase
     {
         parent::setUp();
 
-        $config = $this->container->get('config');
-
         // Create another transport for tests.
-        Arr::set($config, 'messenger.queues.plugins.memory_two.service', 'memory');
+        $this->overrideConfig('messenger.queues.plugins.memory_two.service', 'memory');
 
         $this->messenger = $this->container->get(Messenger::class);
     }

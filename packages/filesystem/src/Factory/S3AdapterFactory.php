@@ -2,13 +2,13 @@
 
 namespace AftDev\Filesystem\Factory;
 
-use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 use Aws\S3\S3Client;
 use Illuminate\Support\Arr;
 use League\Flysystem\Filesystem;
 use Psr\Container\ContainerInterface;
 
-class S3AdapterFactory extends ReflectionAbstractFactory
+class S3AdapterFactory extends ResolverAbstractFactory
 {
     use GetConfigTrait;
 

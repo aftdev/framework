@@ -2,11 +2,11 @@
 
 namespace AftDev\Cache\Factory;
 
-use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 
-class MemcachedAdapterFactory extends ReflectionAbstractFactory
+class MemcachedAdapterFactory extends ResolverAbstractFactory
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {

@@ -2,7 +2,7 @@
 
 namespace AftDevTest\ServiceManager\Factory;
 
-use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 use AftDev\ServiceManager\Resolver;
 use AftDev\Test\TestCase;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
@@ -11,10 +11,10 @@ use Psr\Container\ContainerInterface;
 /**
  * @internal
  *
- * @covers \AftDev\ServiceManager\Factory\ReflectionAbstractFactory
+ * @covers \AftDev\ServiceManager\Factory\ResolverAbstractFactory
  * @covers \AftDev\ServiceManager\Resolver
  */
-class ReflectionAbstractFactoryTest extends TestCase
+class ResolverAbstractFactoryTest extends TestCase
 {
     public function testFactory()
     {
@@ -34,7 +34,7 @@ class ReflectionAbstractFactoryTest extends TestCase
             ->willReturn($resolver->reveal())
         ;
 
-        $built = (new ReflectionAbstractFactory())($container->reveal(), PublicConstructor::class, []);
+        $built = (new ResolverAbstractFactory())($container->reveal(), PublicConstructor::class, []);
 
         $this->assertSame($returned, $built);
     }
@@ -59,7 +59,7 @@ class ReflectionAbstractFactoryTest extends TestCase
         ;
 
         $this->expectException(ServiceNotFoundException::class);
-        (new ReflectionAbstractFactory())($container->reveal(), PublicConstructor::class);
+        (new ResolverAbstractFactory())($container->reveal(), PublicConstructor::class);
     }
 
     /**
@@ -68,7 +68,7 @@ class ReflectionAbstractFactoryTest extends TestCase
     public function testCanCreate()
     {
         $container = $this->prophesize(ContainerInterface::class);
-        $factory = new ReflectionAbstractFactory();
+        $factory = new ResolverAbstractFactory();
 
         $canCreate = $factory->canCreate($container->reveal(), PublicConstructor::class);
         $this->assertTrue($canCreate);

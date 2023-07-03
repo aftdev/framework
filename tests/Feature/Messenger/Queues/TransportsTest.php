@@ -5,7 +5,6 @@ namespace AftDev\Test\Feature\Messenger\Queues;
 use AftDev\Messenger\Queue\QueueManager;
 use AftDev\Test\Feature\Messenger\Messages\TestCommand;
 use AftDev\Test\FeatureTestCase;
-use Illuminate\Support\Arr;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\TransportInterface;
@@ -51,9 +50,7 @@ final class TransportsTest extends FeatureTestCase
 
     public function testInvalidTransport(): void
     {
-        $config = $this->container->get('config');
-
-        Arr::set($config, 'messenger.queues.plugins.invalid.dsn', 'invalid://sdfdf');
+        $this->overrideConfig('messenger.queues.plugins.invalid.dsn', 'invalid://sdfdf');
 
         $queueManager = $this->container->get(QueueManager::class);
 

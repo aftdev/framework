@@ -1,0 +1,45 @@
+{
+  "name": "aftdev/api",
+  "description": "Api Manager",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "api",
+    "openapi"
+  ],
+  "require": {
+    "php": "^8.1",
+    "cebe/php-openapi": "^1.7.0",
+    "illuminate/support": "^9.0"
+  },
+  "require-dev": {
+    "psr/http-server-middleware": "^1.0",
+    "league/openapi-psr7-validator": "^0.18",
+    "phpspec/prophecy-phpunit": "^2.0",
+    "laminas/laminas-diactoros": "^2.7",
+    "mezzio/mezzio-router": "^3.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "AftDev\\Api\\": "src/"
+    },
+    "classmap": [
+      "src/"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AftDevTest\\Api\\": "tests/"
+    }
+  },
+  "suggest": {
+    "aftdev/service-manager": "To autoload spec invokable classes",
+    "aftdev/cache": "To automatically cache generated specs and routes",
+    "psr/http-server-middleware": "To use the middleware",
+    "league/openapi-psr7-validator": "To automatically validate requests"
+  },
+  "extra": {
+    "laminas": {
+      "config-provider": "AftDev\\Api\\ConfigProvider"
+    }
+  }
+}

@@ -4,8 +4,11 @@
   "license": "BSD-3-Clause",
   "require": {
     "php": "^8.1",
+    "cebe/php-openapi": "^1.7.0",
     "illuminate/database": "^9.0 || ^10.0",
     "illuminate/support": "^9.0 || ^10.0",
+    "laminas/laminas-config": "^3.7.0",
+    "laminas/laminas-config-aggregator": "^1.7.0",
     "laminas/laminas-servicemanager": "^3.20.0",
     "laminas/laminas-stdlib": "^3.1",
     "league/flysystem": "^3.0.0",
@@ -19,14 +22,17 @@
     "symfony/messenger": "^6.0",
     "symfony/property-access": "^6.0",
     "symfony/property-info": "^6.0",
-    "symfony/serializer": "^6.0"
+    "symfony/serializer": "^6.0",
+    "symfony/yaml": "^6.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.3.2",
-    "laminas/laminas-config-aggregator": "^1.1",
+    "laminas/laminas-diactoros": "^2.7",
     "league/flysystem-aws-s3-v3": "^3.0",
     "league/flysystem-ftp": "^3.0",
     "league/flysystem-memory": "^3.0",
+    "league/openapi-psr7-validator": "^0.18",
+    "mezzio/mezzio-router": "^3.8",
     "nesbot/carbon": "^2.9.1",
     "phpspec/prophecy": "^1.8.0",
     "phpspec/prophecy-phpunit": "^2.0",
@@ -37,6 +43,7 @@
   },
   "autoload": {
     "classmap": [
+      "packages/api/src/",
       "packages/cache/src/",
       "packages/console/src/",
       "packages/db-eloquent/src/",
@@ -47,6 +54,7 @@
       "packages/service-manager/src/"
     ],
     "psr-4": {
+      "AftDev\\Api\\": "packages/api/src/",
       "AftDev\\Cache\\": "packages/cache/src/",
       "AftDev\\Console\\": "packages/console/src/",
       "AftDev\\DbEloquent\\": "packages/db-eloquent/src/",
@@ -59,6 +67,7 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "AftDevTest\\Api\\": "packages/api/tests/",
       "AftDevTest\\Cache\\": "packages/cache/tests/",
       "AftDevTest\\Console\\": "packages/console/tests/",
       "AftDevTest\\DbEloquent\\": "packages/db-eloquent/tests/",
@@ -71,6 +80,7 @@
     }
   },
   "replace": {
+    "aftdev/api": "self.version",
     "aftdev/cache-manager": "1.0.0",
     "aftdev/console-manager": "1.0.0",
     "aftdev/db-eloquent": "1.0.0",
@@ -100,6 +110,7 @@
   "extra": {
     "laminas": {
       "config-provider": [
+        "AftDev\\Api\\ConfigProvider",
         "AftDev\\Cache\\ConfigProvider",
         "AftDev\\Console\\ConfigProvider",
         "AftDev\\Db\\ConfigProvider",

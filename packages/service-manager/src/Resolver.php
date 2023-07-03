@@ -4,27 +4,21 @@ namespace AftDev\ServiceManager;
 
 use AftDev\ServiceManager\Resolver\RuleBuilder;
 use Psr\Container\ContainerInterface;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionParameter;
+use ReflectionException;
 
 class Resolver
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * Array of rules on how to resolve parameters.
-     *
-     * @var array
      */
-    protected $rules;
+    protected array $rules = [];
 
-    /**
-     * Resolver constructor.
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        protected ContainerInterface $container
+    ) {
     }
 
     /**
@@ -32,28 +26,21 @@ class Resolver
      *
      * @throws \ReflectionException If a parameter cannot be resolved.
      */
-    public function resolveClass(string $requestedName, array $parameters = []): object
+    public function resolveClass(string $requestedName, array $params = []): object
     {
-        $reflectionClass = new \ReflectionClass($requestedName);
+        $reflectionClass = new ReflectionClass($requestedName);
+        $constructor = $reflectionClass->getConstructor();
+        $constructorParams = $constructor ? $constructor->getParameters() : [];
 
-        if (null === ($constructor = $reflectionClass->getConstructor())) {
+        if (empty($constructorParams)) {
             return new $requestedName();
         }
 
-        $reflectionParameters = $constructor->getParameters();
-
-        if (empty($reflectionParameters)) {
-            return new $requestedName();
-        }
-
-        $constructorParameters = array_map(function (\ReflectionParameter $parameter) use ($requestedName, $parameters) {
-            $parameterName = $parameter->getName();
-            if (array_key_exists($parameterName, $parameters)) {
-                return $this->getParameterValue($parameters[$parameterName]);
-            }
-
-            return $this->getServiceParameter($requestedName, $parameter);
-        }, $reflectionParameters);
+        $parameterValues = array_merge($params, $this->rules[$requestedName] ?? []);
+        $constructorParameters = array_map(
+            fn (ReflectionParameter $parameter) => $this->mapParameter($parameter, $parameterValues),
+            $constructorParams
+        );
 
         return new $requestedName(...$constructorParameters);
     }
@@ -62,11 +49,11 @@ class Resolver
      * Automatically call a function with all parameters injected from the container.
      *
      * @param array|callable|string $function - The function name or an array class,function name.
-     * @param array $parameters - List of Hard coded values.
+     * @param array $parameters - List of hard coded values.
      *
      * @throws \ReflectionException If a parameter cannot be resolved.
      */
-    public function call($function, array $parameters = [])
+    public function call(array|callable|string $function, array $parameters = []): mixed
     {
         // Check if callable
         if (is_callable($function)) {
@@ -81,20 +68,16 @@ class Resolver
             $className = $exploded[0];
             $functionName = $exploded[1] ?? '__invoke';
 
-            $reflection = new \ReflectionMethod($className, $functionName);
-            $function = [$this->resolveClass($className, $parameters), $functionName];
+            $reflection = new ReflectionMethod($className, $functionName);
+            $function = [$this->container->get($className), $functionName];
         }
 
         $reflectionParameters = $reflection->getParameters();
 
-        $parameters = array_map(function (\ReflectionParameter $parameter) use ($parameters) {
-            $parameterName = $parameter->getName();
-            if (array_key_exists($parameterName, $parameters)) {
-                return $this->getParameterValue($parameters[$parameterName]);
-            }
-
-            return $this->resolveParameter($parameter);
-        }, $reflectionParameters);
+        $parameters = array_map(
+            fn (ReflectionParameter $parameter) => $this->mapParameter($parameter, $parameters),
+            $reflectionParameters
+        );
 
         return call_user_func($function, ...$parameters);
     }
@@ -112,59 +95,65 @@ class Resolver
      *
      * @param mixed $implementation
      */
-    public function addServiceRule(string $serviceName, string $parameter, $implementation)
+    public function addServiceRule(string $serviceName, string $parameter, $implementation): void
     {
         $this->rules[$serviceName][$parameter] = $implementation;
     }
 
     /**
-     * Get value for a service parameter.
+     * Map function parameter to the given list.
      *
-     * @return mixed
-     *
-     * @throws \ReflectionException If parameter cannot be resolved.
+     * @throws ReflectionException If parameter cannot be resolved.
      */
-    protected function getServiceParameter(string $serviceName, \ReflectionParameter $parameter)
+    protected function mapParameter(ReflectionParameter $parameter, array $parameters = [])
     {
         $parameterName = $parameter->getName();
-        if (isset($this->rules[$serviceName]) && array_key_exists($parameterName, $this->rules[$serviceName])) {
-            return $this->getParameterValue($this->rules[$serviceName][$parameterName]);
+
+        // Primitives.
+        $primitiveName = $parameterName;
+        if (array_key_exists($primitiveName, $parameters)) {
+            return $this->getParameterValue($parameters[$primitiveName]);
         }
 
-        return $this->resolveParameter($parameter);
+        // By TypeHint.
+        $type = $parameter->hasType() ? $parameter->getType() : null;
+
+        $types = $type
+            ? ($type instanceof (\ReflectionUnionType::class) ? $type->getTypes() : [$type])
+            : [];
+
+        foreach ($types as $type) {
+            if ($type->isBuiltin()) {
+                continue;
+            }
+
+            // Rule on type?
+            $parameterTypeName = $type->getName();
+            if (array_key_exists($parameterTypeName, $parameters)) {
+                return $this->getParameterValue($parameters[$parameterTypeName]);
+            }
+
+            // Can the type be fetched from container?
+            if ($this->container->has($parameterTypeName)) {
+                return $this->container->get($parameterTypeName);
+            }
+        }
+
+        // Finally check for default value.
+        if (!$parameter->isOptional()) {
+            throw new ReflectionException(
+                message: sprintf(
+                    'Unable to resolve parameter "%s"',
+                    $parameterName
+                ),
+            );
+        }
+
+        return $parameter->getDefaultValue();
     }
 
     protected function getParameterValue($value)
     {
         return $value instanceof \Closure ? $value() : $value;
-    }
-
-    /**
-     * @throws \ReflectionException If parameter cannot be resolved.
-     */
-    protected function resolveParameter(\ReflectionParameter $parameter)
-    {
-        $parameterName = $parameter->getName();
-
-        // Check that we have the value in the container.
-        $type = $parameter->getType() ?? null;
-        $notBuildIn = $type && !$type->isBuiltin();
-        if ($type && $notBuildIn && $this->container->has($type->getName())) {
-            return $this->container->get($type->getName());
-        }
-
-        try {
-            // Finally check for default value.
-            return $parameter->getDefaultValue();
-        } catch (\ReflectionException $e) {
-            throw new \ReflectionException(
-                sprintf(
-                    'Unable to resolve parameter "%s"',
-                    $parameterName
-                ),
-                0,
-                $e
-            );
-        }
     }
 }

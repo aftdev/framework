@@ -7,7 +7,7 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Psr\Container\ContainerInterface;
 
-class ReflectionAbstractFactory implements AbstractFactoryInterface
+class ResolverAbstractFactory implements AbstractFactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -28,6 +28,9 @@ class ReflectionAbstractFactory implements AbstractFactoryInterface
         }
     }
 
+    /**
+     * @return bool
+     */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
         return class_exists($requestedName) && $this->canCallConstructor($requestedName);

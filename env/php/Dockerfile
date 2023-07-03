@@ -24,4 +24,6 @@ COPY ["env/php/config.ini", "/etc/php.d/zzzzz_docker.ini"]
 
 WORKDIR /data
 
+ENV APP_ENV production
+
 CMD ["php", "-a"]

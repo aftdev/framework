@@ -4,6 +4,7 @@ namespace AftDev\Test;
 
 use AftDev\Db\Migration\PhinxApplication;
 use AftDev\DbEloquent\Capsule\CapsuleManager;
+use Illuminate\Support\Arr;
 use Laminas\ServiceManager\ServiceManager;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -97,5 +98,16 @@ class FeatureTestCase extends TestCase
         $this->container->setAllowOverride(false);
 
         return $mock;
+    }
+
+    protected function overrideConfig(string|array $configName, $configValue)
+    {
+        if (is_array($configName)) {
+            $configName = join('.', $configName);
+        }
+
+        $config = $this->container->get('config');
+
+        Arr::set($config, $configName, $configValue);
     }
 }

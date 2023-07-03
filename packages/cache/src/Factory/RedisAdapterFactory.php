@@ -2,11 +2,11 @@
 
 namespace AftDev\Cache\Factory;
 
-use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 
-class RedisAdapterFactory extends ReflectionAbstractFactory
+class RedisAdapterFactory extends ResolverAbstractFactory
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {

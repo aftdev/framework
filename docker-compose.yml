@@ -12,6 +12,7 @@ services:
     # Map local user to container user for file permissions.
     user: '${UID:-1000}:${GID:-1000}'
     environment:
+      APP_ENV: ${APP_ENV:-production}
       PHP_VERSION: ${PHP_VERSION:-80}
     volumes:
       - './:/data'

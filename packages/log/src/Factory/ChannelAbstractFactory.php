@@ -2,13 +2,13 @@
 
 namespace AftDev\Log\Factory;
 
-use AftDev\ServiceManager\Factory\ReflectionAbstractFactory;
+use AftDev\ServiceManager\Factory\ResolverAbstractFactory;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 
-class ChannelAbstractFactory extends ReflectionAbstractFactory
+class ChannelAbstractFactory extends ResolverAbstractFactory
 {
     public function __invoke(ContainerInterface $container, $handlerName, array $options = null)
     {
