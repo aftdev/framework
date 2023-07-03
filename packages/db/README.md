@@ -1,8 +1,10 @@
 # Db Manager.
 
-Database connection manager with migration feature using [phinx](https://phinx.org)
+Database connection manager with migration feature using
+[phinx](https://phinx.org)
 
-Provide a common repository of database connections that can be used by other packages.
+Provide a common repository of database connections that can be used by other
+packages.
 
 ## Database Connections
 
@@ -32,10 +34,10 @@ return [
 
 ## Phinx Db Migration Manager.
 
-Allow other packages to define phinx migrations scripts. 
+Allow other packages to define phinx migrations scripts.
 
 ```php
-<?php 
+<?php
 return [
     'database' => [
         'migrations' => [

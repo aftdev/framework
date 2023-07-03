@@ -19,7 +19,7 @@ services:
   # Mysql Database
   mysql:
     container_name: framework-mysql
-    image: mysql:8
+    image: mysql:8.0
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_ROOT_PASSWORD: 'root'
@@ -41,7 +41,7 @@ services:
     volumes:
       - '${TMPDIR:-/tmp/localstack}:/tmp/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
-      - './env/aws:/docker-entrypoint-initaws.d'
+      - './env/aws:/etc/localstack/init'
   # Redis Database
   redis:
     image: redis

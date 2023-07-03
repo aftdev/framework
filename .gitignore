@@ -1,13 +1,23 @@
 .idea
 .DS_Store
-node_modules
 composer.phar
 clover.xml
 phpunit.xml
-.phpunit.result.cache
+.phpunit.cache
 vendor/
 .php-cs-fixer.cache
 coverage/
 config/*.develop
 tests/data/log
 .env
+docker-compose.override.yml
+
+# Yarn
+node_modules
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

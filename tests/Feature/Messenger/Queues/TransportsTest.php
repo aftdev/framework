@@ -40,7 +40,7 @@ final class TransportsTest extends FeatureTestCase
         $this->assertCount(0, $messages);
     }
 
-    public function transportProviders()
+    public static function transportProviders()
     {
         return [
             'memory transport' => ['transport' => 'memory'],

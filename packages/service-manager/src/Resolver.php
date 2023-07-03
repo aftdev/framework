@@ -5,9 +5,6 @@ namespace AftDev\ServiceManager;
 use AftDev\ServiceManager\Resolver\RuleBuilder;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
-use ReflectionException;
-use ReflectionFunction;
-use ReflectionMethod;
 use ReflectionParameter;
 
 class Resolver
@@ -25,7 +22,7 @@ class Resolver
     /**
      * Create a class with all dependencies automatically injected.
      *
-     * @throws ReflectionException If a parameter cannot be resolved.
+     * @throws \ReflectionException If a parameter cannot be resolved.
      */
     public function resolveClass(string $requestedName, array $params = []): object
     {
@@ -52,16 +49,16 @@ class Resolver
      * @param array|callable|string $function - The function name or an array class,function name.
      * @param array $parameters - List of hard coded values.
      *
-     * @throws ReflectionException If a parameter cannot be resolved.
+     * @throws \ReflectionException If a parameter cannot be resolved.
      */
     public function call(array|callable|string $function, array $parameters = []): mixed
     {
         // Check if callable
         if (is_callable($function)) {
             if (is_array($function)) {
-                $reflection = new ReflectionMethod(...$function);
+                $reflection = new \ReflectionMethod(...$function);
             } else {
-                $reflection = new ReflectionFunction($function);
+                $reflection = new \ReflectionFunction($function);
             }
         } else {
             $exploded = explode('@', $function);

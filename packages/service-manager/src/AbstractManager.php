@@ -99,7 +99,7 @@ abstract class AbstractManager extends LaminasPluginManager
      *
      * {@inheritdoc}
      */
-    public function has($name): bool
+    public function has($name)
     {
         return parent::has($name) || $this->hasPlugin($name);
     }

@@ -9,7 +9,7 @@
     "php": "^8.1",
     "league/flysystem": "^3.0.0",
     "aftdev/service-manager": "^1.1",
-    "illuminate/support": "^9.0"
+    "illuminate/support": "^9.0 || ^10.0"
   },
   "require-dev": {
     "league/flysystem-memory": "^3.0",
