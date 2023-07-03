@@ -38,9 +38,6 @@ abstract class AbstractManager extends LaminasPluginManager
      */
     protected $pluginsOptions = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $config)
     {
         parent::configure($config);

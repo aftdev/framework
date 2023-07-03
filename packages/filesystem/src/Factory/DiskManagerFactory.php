@@ -11,9 +11,6 @@ class DiskManagerFactory extends AbstractManagerFactory
 {
     protected $managerClass = DiskManager::class;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getManagerConfiguration(ContainerInterface $container): array
     {
         return $container->get('config')[ConfigProvider::CONFIG_KEY]['disks'];

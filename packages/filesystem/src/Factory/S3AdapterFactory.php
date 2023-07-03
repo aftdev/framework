@@ -20,9 +20,6 @@ class S3AdapterFactory extends ReflectionAbstractFactory
         'use_path_style_endpoint',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         // Fetch config of the filesystem.

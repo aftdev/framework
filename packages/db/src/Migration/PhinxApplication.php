@@ -25,9 +25,6 @@ class PhinxApplication extends ParentApplication
         $this->find('test')->setHidden(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function find($name)
     {
         $command = parent::find($name);

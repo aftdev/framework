@@ -10,9 +10,6 @@ class QueueManagerFactory extends AbstractManagerFactory
 {
     protected $managerClass = QueueManager::class;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getManagerConfiguration(ContainerInterface $container): array
     {
         return $container->get('config')[ConfigProvider::KEY_MESSENGER][ConfigProvider::KEY_QUEUES];

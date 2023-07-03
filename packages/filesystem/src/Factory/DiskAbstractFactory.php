@@ -10,9 +10,6 @@ class DiskAbstractFactory extends ReflectionAbstractFactory
 {
     use GetConfigTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         // Fetch config of the filesystem.

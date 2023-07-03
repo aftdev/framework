@@ -8,9 +8,6 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class RedisAdapterFactory extends ReflectionAbstractFactory
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         // Create RedisClient Client.
